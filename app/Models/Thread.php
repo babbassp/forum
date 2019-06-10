@@ -9,11 +9,12 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  *
- * @property int                                             $id
- * @property int                                             $user_id
- * @property string                                          $title
- * @property string                                          $body
- * @property \Illuminate\Database\Eloquent\Relations\HasMany $replies
+ * @property int                                               $id
+ * @property int                                               $user_id
+ * @property string                                            $title
+ * @property string                                            $body
+ * @property \Illuminate\Database\Eloquent\Relations\HasMany   $replies
+ * @property \Illuminate\Database\Eloquent\Relations\BelongsTo $creator
  */
 class Thread extends Model
 {
@@ -36,6 +37,20 @@ class Thread extends Model
     ];
 
     /**
+     *
+     * @return mixed
+     */
+    public function getCreatorName()
+    {
+        return $this->creator->name;
+    }
+
+    public function addReply(array $reply)
+    {
+        $this->replies()->create($reply);
+    }
+
+    /**
      * The replies associated with a thread.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -43,5 +58,14 @@ class Thread extends Model
     public function replies()
     {
         return $this->hasMany(Reply::class);
+    }
+
+    /**
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
