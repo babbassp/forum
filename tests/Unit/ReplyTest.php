@@ -21,6 +21,6 @@ class ReplyTest extends TestCase
     {
         $reply = factory(Reply::class)->create();
 
-        $this->assertInstanceOf(User::class, $reply->user);
+        $this->assertInstanceOf(User::class, $reply->owner);
     }
 }

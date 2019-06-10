@@ -7,14 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class Reply extends Model
 {
 
+    protected $fillable = [
+        'user_id',
+        'thread_id',
+        'body'
+    ];
+
     /**
      * The user associated with the reply.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function owner()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
