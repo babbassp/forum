@@ -11,6 +11,8 @@ class CreateThreadsTest extends TestCase
     /** @test */
     public function guests_may_not_create_a_thread()
     {
+        $this->withoutExceptionHandling();
+
         $this->expectException(\Illuminate\Auth\AuthenticationException::class);
 
         $thread = factory(Thread::class)->raw();

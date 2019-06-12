@@ -12,9 +12,9 @@ class ParticipateInForumTest extends TestCase
     /** @test */
     public function unauthenticated_users_cannot_reply_to_thread()
     {
-        $this->expectException('Illuminate\Auth\AuthenticationException');
+        $this->withoutExceptionHandling();
 
-        // just checking if the exception is thrown, no need to create the user, thread, etc.
+        $this->expectException('Illuminate\Auth\AuthenticationException');
 
         $this->post(route('threads.reply.store', 1), []);
     }
