@@ -23,10 +23,10 @@ class ParticipateInForumTest extends TestCase
     /** @test */
     public function an_authenticated_user_may_participate_in_foriegn_threads()
     {
-        $user = factory(User::class)->create();
+        $this->actingAs($user = factory(User::class)->create());
 
-        $this->actingAs($user);
         $channel = factory(Channel::class)->create();
+
         $thread = factory(Thread::class)->create(['channel_id' => $channel->id]);
 
         $reply = factory(Reply::class)->make(['user_id' => $user->id]);
@@ -41,5 +41,25 @@ class ParticipateInForumTest extends TestCase
         $this->get(
             route('threads.show', $thread->getUrlParams())
         )->assertSee($reply->body);
+    }
+
+    /** @test */
+    public function a_reply_body_is_required()
+    {
+        $this->actingAs($user = factory(User::class)->create());
+
+        $channel = factory(Channel::class)->create();
+
+        $thread = factory(Thread::class)->create(['channel_id' => $channel->id]);
+
+        $reply = factory(Reply::class)->make([
+            'user_id' => $user->id,
+            'body'    => null
+        ]);
+
+        $this->post(
+            route('threads.reply.store', $thread->getUrlParams()),
+            $reply->toArray()
+        )->assertSessionHasErrors('body');
     }
 }
