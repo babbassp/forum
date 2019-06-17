@@ -39,12 +39,10 @@ class ThreadTest extends TestCase
     }
 
     /** @test */
-    public function a_thread_can_add_a_reply()
+    public function every_thread_belongs_to_a_channel()
     {
-        $this->thread->addReply(factory(Reply::class)->make()->toArray());
+        $thread = factory(Thread::class)->create();
 
-        $this->assertCount(1, $this->thread->replies);
-
-        $this->assertInstanceOf(Collection::class, $this->thread->replies);
+        $this->assertInstanceOf(\App\Models\Channel::class, $thread->channel);
     }
 }

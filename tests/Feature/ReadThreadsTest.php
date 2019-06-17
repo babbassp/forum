@@ -2,32 +2,19 @@
 
 namespace Tests\Feature;
 
+use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
 use Tests\TestCase;
 
 class ReadThreadsTest extends TestCase
 {
-
-    /**
-     * @var
-     */
-    protected $thread;
-
-    /**
-     *
-     */
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->thread = factory(Thread::class)->create();
-    }
-
     /** @test */
     public function a_user_can_see_all_threads()
     {
-        $threads = factory(Thread::class, 10)->create();
+        $channel = factory(Channel::class)->create()->id;
+
+        $threads = factory(Thread::class, 10)->create(['channel_id' => $channel]);
 
         $response = $this->get(route('threads.index'));
 
@@ -40,19 +27,27 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function a_user_can_see_a_specific_thread()
     {
-        $this->get(route('threads.show', $this->thread->id))
-            ->assertSee($this->thread->title)
-            ->assertSee($this->thread->body);
+        $channel = factory(Channel::class)->create()->id;
+
+        $thread = factory(Thread::class)->create(['channel_id' => $channel]);
+
+        $this->get(route('threads.show', $thread->getUrlParams()))
+            ->assertSee($thread->title)
+            ->assertSee($thread->body);
     }
 
     /** @test */
     public function a_user_can_see_a_reply_associated_with_a_thread()
     {
+        $channel = factory(Channel::class)->create()->id;
+
+        $thread = factory(Thread::class)->create(['channel_id' => $channel]);
+
         $reply = factory(Reply::class)->create([
-            'thread_id' => $this->thread->id
+            'thread_id' => $thread->id
         ]);
 
-        $this->get(route('threads.show', $this->thread->id))
+        $this->get(route('threads.show', $thread->getUrlParams()))
             ->assertSee($reply->body);
     }
 }
