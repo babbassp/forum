@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ThreadRequest;
 use App\Models\Channel;
 use App\Models\Thread;
 use Illuminate\Http\Request;
@@ -48,19 +49,18 @@ class ThreadsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @throws
+     * @param  \App\Http\Requests\ThreadRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ThreadRequest $request)
     {
-        Thread::create([
-            'user_id'    => auth()->id(),
-            'channel_id' => $request->input('channel_id'),
-            'title'      => $request->input('title'),
-            'body'       => $request->input('body')
-        ]);
+        $validated = $request->validated();
+        $validated['user_id'] = auth()->id();
 
-        return redirect(route('threads.index'));
+        $thread = Thread::create($validated);
+
+        return redirect(route('threads.show', $thread->getUrlParams()));
     }
 
     /**
