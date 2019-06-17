@@ -27,7 +27,7 @@
         @if( auth()->check() )
             <div class="row justify-content-center">
                 <div class="col-md-10">
-                    <form method="POST" action="{{ route('threads.reply.store', $thread) }}">
+                    <form method="POST" action="{{ route('threads.reply.store', $thread->getUrlParams()) }}">
                         @csrf
                         <div class="form-group">
                                     <textarea class="form-control rounded"
