@@ -26,7 +26,7 @@ class ViewServiceProvider extends ServiceProvider
     {
         // Using class based composers...
         View::composer(
-            ['layouts.app', 'threads.create'], 'App\Http\View\Composers\ChannelComposer'
+            '*', 'App\Http\View\Composers\ChannelComposer'
         );
     }
 }
