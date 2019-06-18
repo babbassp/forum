@@ -11,14 +11,7 @@
 |
 */
 
-
-///////////////// Channel ///////////////////////
-//Route::get('threads/{channel}', [
-//    'as'   => 'threads.channel.index',
-//    'uses' => 'ChannelController@index'
-//]);
-
-///////////////// Threads ///////////////////////
+///////////////// Threads & Channels /////////////
 //Route::get('threads/{channel}/create', [
 //    'as'   => 'threads.create',
 //    'uses' => 'ThreadsController@create'
@@ -27,12 +20,16 @@
 //    'as'   => 'threads.store',
 //    'uses' => 'ThreadsController@store'
 //]);
+Route::resource('threads', 'ThreadsController', [
+    'except' => ['show', 'index']
+]);
 Route::get('threads/{channel}/{thread}', [
     'as'   => 'threads.show',
     'uses' => 'ThreadsController@show'
 ]);
-Route::resource('threads', 'ThreadsController', [
-    'except' => ['show']
+Route::get('threads/{channel?}', [
+    'as'   => 'threads.index',
+    'uses' => 'ThreadsController@index'
 ]);
 
 /////////////// Replies /////////////////////////

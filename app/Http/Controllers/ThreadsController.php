@@ -27,11 +27,16 @@ class ThreadsController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param \App\Models\Channel $channel
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Channel $channel)
     {
-        $threads = Thread::all();
+        if ($channel->exists) {
+            $threads = $channel->threads()->latest()->get();
+        }else {
+            $threads = Thread::all();
+        }
 
         return view('threads.index')->with('threads', $threads);
     }
