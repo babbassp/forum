@@ -78,4 +78,18 @@ class CreateThreadsTest extends TestCase
 
         return $this->post(route('threads.store'), $thread->toArray());
     }
+
+    /** @test */
+    public function a_user_can_filter_threads_by_any_username()
+    {
+        $this->signIn(factory(User::class)->create(['name' => 'foo']));
+
+        $threadByFoo = factory(Thread::class)->create(['user_id' => auth()->id()]);
+
+        $threadNotByFoo = factory(Thread::class)->create();
+
+        $this->get(route('threads.index') . '?by=foo')
+            ->assertSee($threadByFoo->title)
+            ->assertDontSee($threadNotByFoo->title);
+    }
 }

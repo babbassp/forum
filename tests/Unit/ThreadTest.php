@@ -45,4 +45,14 @@ class ThreadTest extends TestCase
 
         $this->assertInstanceOf(\App\Models\Channel::class, $thread->channel);
     }
+
+    /** @test */
+    public function a_user_has_many_threads()
+    {
+        $user = factory(User::class)->create();
+
+        factory(Thread::class)->create(['user_id' => $user->id]);
+
+        $this->assertInstanceOf(Collection::class, $user->threads);
+    }
 }
