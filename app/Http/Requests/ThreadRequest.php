@@ -25,8 +25,8 @@ class ThreadRequest extends FormRequest
     {
         return [
             'channel_id' => 'required|exists:channels,id',
-            'title'      => 'required|string',
-            'body'       => 'required|string'
+            'title'      => 'required',
+            'body'       => 'required'
         ];
     }
 
@@ -38,7 +38,10 @@ class ThreadRequest extends FormRequest
     public function messages()
     {
         return [
-            'title.string' => 'The title cannot be empty!'
+            'channel_id.required' => 'The channel is required!',
+            'channel_id.exists'   => 'The channel does not exist!',
+            'title.required'      => 'The title is required!',
+            'body.required'       => 'The body is required!',
         ];
     }
 }
