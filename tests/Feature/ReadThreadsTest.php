@@ -50,4 +50,18 @@ class ReadThreadsTest extends TestCase
         $this->get(route('threads.show', $thread->getUrlParams()))
             ->assertSee($reply->body);
     }
+
+    /** @test */
+    public function a_user_can_filter_a_thread_according_to_tags()
+    {
+        $expectedThread = factory(Thread::class)->create([
+            'channel_id' => factory(Channel::class)->create()->id
+        ]);
+
+        $anotherThread = factory(Thread::class)->create();
+
+        $this->get(route('threads.index', $expectedThread->channel->slug))
+            ->assertSee($expectedThread->title)
+            ->assertDontSee($anotherThread->title);
+    }
 }
