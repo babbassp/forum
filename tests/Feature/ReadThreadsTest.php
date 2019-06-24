@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
+use Carbon\Carbon;
 use Tests\TestCase;
 
 class ReadThreadsTest extends TestCase
@@ -63,5 +64,20 @@ class ReadThreadsTest extends TestCase
         $this->get(route('threads.index', $expectedThread->channel->slug))
             ->assertSee($expectedThread->title)
             ->assertDontSee($anotherThread->title);
+    }
+
+    /** @test */
+    public function a_user_can_filter_threads_by_popularity()
+    {
+        $mostPopular = factory(Thread::class)->create(['created_at' => Carbon::now()->subMinutes(2)]);
+        factory(Reply::class, 3)->create(['thread_id' => $mostPopular->id]);
+
+        $somewhatPopular = factory(Thread::class)->create(['created_at' => Carbon::now()->subMinutes(5)]);
+        factory(Reply::class, 2)->create(['thread_id' => $somewhatPopular->id]);
+
+        factory(Thread::class)->create(); // least popular with no replies
+
+        $threads = $this->getJson(route('threads.index') . '?popularity=1')->decodeResponseJson();
+        $this->assertEquals([3, 2, 0], array_column($threads, 'replies_count'));
     }
 }
