@@ -2,8 +2,9 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-10">
+        {{-- The thread --}}
+        <div class="row">
+            <div class="col-md-8">
                 <div class="card mb-3">
                     <div class="card-header">
                         <h4>
@@ -15,33 +16,34 @@
                         {{ $thread->body }}
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-md-10">
-                @foreach ($thread->replies as $reply)
+                {{-- Replies to the thread --}}
+                @foreach ($replies as $reply)
                     @include('threads.reply')
                 @endforeach
-            </div>
-        </div>
-        @if( auth()->check() )
-            <div class="row justify-content-center">
-                <div class="col-md-10">
+                {{ $replies->links() }}
+                {{-- Create a new thread --}}
+                @if( auth()->check() )
                     <form method="POST" action="{{ route('threads.reply.store', $thread->getUrlParams()) }}">
                         @csrf
                         <div class="form-group">
-                                    <textarea class="form-control rounded"
-                                              type="text"
-                                              id="body" name="body"
-                                              placeholder="Add a public reply..."
+                                    <textarea class="form-control rounded" type="text"
+                                              id="body" name="body" placeholder="Add a public reply..."
                                               rows="5"></textarea>
                         </div>
                         <button class="btn btn-outline-primary" type="submit">REPLY</button>
                     </form>
+                @else
+                    <p>Please <a href="{{ route('login') }}">sign in</a> to participate.</p>
+                @endif
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <p>This thread was published {{ $thread->created_at->diffForHumans() }} by
+                            <a href="#">{{ $thread->creator->name }}</a> and currently has {{ $thread->replies_count }} {{ \Illuminate\Support\Str::plural('reply', $thread->replies_count) }}.</p>
+                    </div>
                 </div>
             </div>
-        @else
-            <p>Please <a href="{{ route('login') }}">sign in</a> to participate.</p>
-        @endif
+        </div>
     </div>
 @endsection

@@ -40,6 +40,20 @@ class Thread extends Model
     ];
 
     /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('replyCount', function ($builder) {
+            $builder->withCount('replies');
+        });
+    }
+
+    /**
      * Returns the person who created the thread.
      *
      * @return mixed
@@ -90,5 +104,17 @@ class Thread extends Model
     public function channel()
     {
         return $this->belongsTo(Channel::class);
+    }
+
+    /**
+     *
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \App\Filters\ThreadFilters            $filters
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function scopeFilter($query, $filters)
+    {
+        return $filters->apply($query);
     }
 }
