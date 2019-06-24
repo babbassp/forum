@@ -12,14 +12,6 @@
 */
 
 ///////////////// Threads & Channels /////////////
-//Route::get('threads/{channel}/create', [
-//    'as'   => 'threads.create',
-//    'uses' => 'ThreadsController@create'
-//]);
-//Route::post('threads/{channel}', [
-//    'as'   => 'threads.store',
-//    'uses' => 'ThreadsController@store'
-//]);
 Route::resource('threads', 'ThreadsController', [
     'except' => ['show', 'index']
 ]);
@@ -30,6 +22,12 @@ Route::get('threads/{channel}/{thread}', [
 Route::get('threads/{channel?}', [
     'as'   => 'threads.index',
     'uses' => 'ThreadsController@index'
+]);
+
+/////////////// Favorites ////////////////////////
+Route::post('replies/{reply}/favorites', [
+    'as'   => 'replies.favorites',
+    'uses' => 'FavoritesController@store'
 ]);
 
 /////////////// Replies /////////////////////////
