@@ -44,6 +44,7 @@
                             @if ( auth()->check() )
                                 <a class="nav-link" href="{{ route('threads.index') . '?by=' . auth()->user()->name }}">My Threads</a>
                             @endif
+                            <a class="nav-link" href="{{ route('threads.index') . '?popularity=1' }}">Popular Threads</a>
                         </div>
                     </li>
                     <li class="nav-item">
