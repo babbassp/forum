@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Favorite;
 use App\Models\Reply;
 use App\Models\Thread;
 use App\Models\User;
@@ -54,5 +55,18 @@ class ThreadTest extends TestCase
         factory(Thread::class)->create(['user_id' => $user->id]);
 
         $this->assertInstanceOf(Collection::class, $user->threads);
+    }
+
+    /** @test */
+    public function a_reply_can_have_many_likes()
+    {
+        $reply = factory(Reply::class)->create();
+
+        factory(Favorite::class)->create([
+            'favorited_id'   => $reply->id,
+            'favorited_type' => Reply::class
+        ]);
+
+        $this->assertInstanceOf(Collection::class, $reply->favorites);
     }
 }
