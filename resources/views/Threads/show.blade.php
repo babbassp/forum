@@ -40,7 +40,7 @@
                 <div class="card mb-3">
                     <div class="card-body">
                         <p>This thread was published {{ $thread->created_at->diffForHumans() }} by
-                            <a href="#">{{ $thread->creator->name }}</a> and currently has {{ $thread->replies_count }} {{ \Illuminate\Support\Str::plural('reply', $thread->replies_count) }}.</p>
+                            <a href="#">{{ $thread->creator->name }}</a> and currently has {{ $thread->replies_count }} {{ Str::plural('reply', $thread->replies_count) }}.</p>
                     </div>
                 </div>
             </div>
