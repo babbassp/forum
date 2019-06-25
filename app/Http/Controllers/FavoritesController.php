@@ -41,11 +41,13 @@ class FavoritesController extends Controller
      *
      * @param \App\Models\Reply         $reply
      * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Http\Response
      */
     public function store(Reply $reply, Request $request)
     {
-        return $reply->favorite();
+        $reply->favorite();
+
+        return back();
     }
 
     /**

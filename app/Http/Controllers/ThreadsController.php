@@ -32,7 +32,7 @@ class ThreadsController extends Controller
      * @param \App\Models\Channel        $channel
      * @param  \Illuminate\Http\Request  $request
      * @param \App\Filters\ThreadFilters $filters
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Database\Eloquent\Collection
      */
     public function index(Channel $channel, Request $request, ThreadFilters $filters)
     {
