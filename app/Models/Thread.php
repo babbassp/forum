@@ -40,6 +40,13 @@ class Thread extends Model
     ];
 
     /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['channel'];
+
+    /**
      * The "booting" method of the model.
      *
      * @return void
@@ -50,6 +57,10 @@ class Thread extends Model
 
         static::addGlobalScope('replyCount', function ($builder) {
             $builder->withCount('replies');
+        });
+
+        static::addGlobalScope('creator', function ($builder) {
+            $builder->with('creator');
         });
     }
 
@@ -83,7 +94,7 @@ class Thread extends Model
      */
     public function replies()
     {
-        return $this->hasMany(Reply::class)->withCount('favorites');
+        return $this->hasMany(Reply::class);
     }
 
     /**

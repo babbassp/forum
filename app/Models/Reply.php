@@ -2,11 +2,30 @@
 
 namespace App\Models;
 
+use App\Traits\Favorable;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Reply
+ *
+ * @package App\Models
+ *
+ * @property int                                                                              $user_id
+ * @property int                                                                              $thread_id
+ * @property string                                                                           $body
+ * @property \Illuminate\Database\Eloquent\Relations\BelongsTo                                $thread
+ * @property \Illuminate\Database\Eloquent\Relations\MorphMany|\Illuminate\Support\Collection $favorites
+ * @property \Illuminate\Database\Eloquent\Relations\BelongsTo                                $owner
+ */
 class Reply extends Model
 {
+    use Favorable;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'user_id',
         'thread_id',
@@ -14,21 +33,11 @@ class Reply extends Model
     ];
 
     /**
-     * Favorite a reply.
+     * The relationships that should always be loaded.
      *
-     * @author Brandon Abbasspour <babbassp@umflint.edu>
+     * @var array
      */
-    public function favorite()
-    {
-        if (! $this->isFavorited()) {
-            return $this->favorites()->create(['user_id' => auth()->id()]);
-        }
-    }
-
-    public function isFavorited()
-    {
-        return $this->favorites()->where('user_id', auth()->id())->exists();
-    }
+    protected $with = ['owner', 'favorites'];
 
     /**
      * The user associated with the reply.
@@ -48,16 +57,5 @@ class Reply extends Model
     public function thread()
     {
         return $this->belongsTo(Thread::class);
-    }
-
-    /**
-     * Get the reply's favorites.
-     *
-     * @author Brandon Abbasspour <babbassp@umflint.edu>
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function favorites()
-    {
-        return $this->morphMany(Favorite::class, 'favorited');
     }
 }
