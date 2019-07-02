@@ -8,7 +8,7 @@
                 <div class="card mb-3">
                     <div class="card-header">
                         <h4>
-                            <a href="#">{{ $thread->getCreatorName() }}</a> posted:
+                            <a href="{{ route('profile', $thread->getCreatorName()) }}">{{ $thread->getCreatorName() }}</a> posted:
                             {{ $thread->title }}
                         </h4>
                     </div>

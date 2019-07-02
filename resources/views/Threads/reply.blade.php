@@ -2,7 +2,7 @@
     <div class="card-header">
         <div class="d-flex justify-content-between">
             <div class="p2">
-                <h4><a href="#">{{ $reply->owner->name }}</a> said {{ $reply->created_at->diffForHumans() }}...</h4>
+                <h4><a href="{{ route('profile', $reply->owner->name) }}">{{ $reply->owner->name }}</a> said {{ $reply->created_at->diffForHumans() }}...</h4>
             </div>
             <div class="p2">
                 <form method="POST" action="{{ route('replies.favorites', $reply->id) }}">

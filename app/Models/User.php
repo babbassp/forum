@@ -6,6 +6,13 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * Class User
+ *
+ * @package App\Models
+ *
+ * @property \Illuminate\Database\Eloquent\Relations\HasMany $threads
+ */
 class User extends Authenticatable
 {
     use Notifiable;
@@ -41,13 +48,23 @@ class User extends Authenticatable
     ];
 
     /**
-     * The threads that are associated with a user.
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'name';
+    }
+
+    /**
+     * Get a user's threads.
      *
      * @author Brandon Abbasspour <babbassp@umflint.edu>
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function threads()
     {
-        return $this->hasMany(Thread::class);
+        return $this->hasMany(Thread::class)->latest();
     }
 }
