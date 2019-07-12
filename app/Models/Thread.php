@@ -65,13 +65,13 @@ class Thread extends Model
     }
 
     /**
-     * Returns the person who created the thread.
+     * Returns the name of the person who created the thread.
      *
-     * @return mixed
+     * @return string
      */
     public function getCreatorName()
     {
-        return $this->creator->name;
+        return $this->creator->getName();
     }
 
     /**
@@ -82,7 +82,7 @@ class Thread extends Model
     public function getUrlParams()
     {
         return [
-            $this->channel->slug,
+            $this->channel->getSlug(),
             $this->id
         ];
     }

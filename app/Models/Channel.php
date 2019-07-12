@@ -44,4 +44,15 @@ class Channel extends Model
     {
         return 'slug';
     }
+
+    /**
+     * Get a channel's slug.
+     *
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
 }

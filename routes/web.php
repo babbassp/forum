@@ -38,6 +38,7 @@ Route::get('threads/{channel}/{thread}/replies', [
 Route::post('threads/{channel}/{thread}/replies', 'RepliesController@store')
     ->name('threads.reply.store');
 
+/////////// Profiles ////////////////////////////
 Route::get('profiles/{user}', 'ProfilesController@show')
     ->name('profile');
 

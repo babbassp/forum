@@ -12,6 +12,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @package App\Models
  *
  * @property \Illuminate\Database\Eloquent\Relations\HasMany $threads
+ * @property string                                          $name
+ * @property string                                          $email
+ * @property string                                          $password
+ *
  */
 class User extends Authenticatable
 {
@@ -55,6 +59,17 @@ class User extends Authenticatable
     public function getRouteKeyName()
     {
         return 'name';
+    }
+
+    /**
+     * Get a user's name.
+     *
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**

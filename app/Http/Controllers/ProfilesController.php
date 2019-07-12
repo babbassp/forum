@@ -14,10 +14,9 @@ class ProfilesController extends Controller
      */
     public function show(User $user)
     {
-        return view('profiles.show')
-            ->with([
-                'profileUser' => $user,
-                'threads'     => $user->threads()->simplePaginate(15)
-            ]);
+        return view('profiles.show', [
+            'profileUser' => $user,
+            'threads'     => $user->threads()->simplePaginate(15)
+        ]);
     }
 }
