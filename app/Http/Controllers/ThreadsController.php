@@ -6,7 +6,6 @@ use App\Filters\ThreadFilters;
 use App\Http\Requests\ThreadRequest;
 use App\Models\Channel;
 use App\Models\Thread;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 /**
@@ -114,12 +113,22 @@ class ThreadsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param \App\Models\Channel $channel
      * @param  \App\Models\Thread $thread
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Contracts\Routing\ResponseFactory
+     * @throws \Exception
      */
-    public function destroy(Thread $thread)
+    public function destroy(Channel $channel, Thread $thread)
     {
-        //
+        $thread->replies()->delete();
+
+        $thread->delete();
+
+        if (request()->wantsJson()) {
+            return response([], 204);
+        }
+
+        return back();
     }
 
     /**

@@ -13,7 +13,7 @@
 
 ///////////////// Threads & Channels /////////////
 Route::resource('threads', 'ThreadsController', [
-    'except' => ['show', 'index']
+    'except' => ['show', 'index', 'destroy']
 ]);
 Route::get('threads/{channel}/{thread}', [
     'as'   => 'threads.show',
@@ -22,6 +22,10 @@ Route::get('threads/{channel}/{thread}', [
 Route::get('threads/{channel?}', [
     'as'   => 'threads.index',
     'uses' => 'ThreadsController@index'
+]);
+Route::delete('threads/{channel}/{thread}', [
+    'as'   => 'threads.destroy',
+    'uses' => 'ThreadsController@destroy'
 ]);
 
 /////////////// Favorites ////////////////////////

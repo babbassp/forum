@@ -21,6 +21,13 @@
                             <p class="card-text">
                                 {{ $thread->body }}
                             </p>
+                            <form method="POST" action="{{ route('threads.destroy', $thread->getUrlParams()) }}">
+                                @csrf()
+                                @method('DELETE')
+                                <button class="btn btn-link" type="submit">
+                                    <a href="{{ route('threads.destroy', $thread->getUrlParams()) }}">Delete</a>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
