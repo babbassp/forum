@@ -2,11 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Models\Reply;
 use App\Models\Thread;
 use App\Models\User;
 use Tests\TestCase;
 
-class CreateThreadsTest extends TestCase
+class ManageThreadsTest extends TestCase
 {
     /** @test */
     public function guests_may_not_create_a_thread()
@@ -91,5 +92,40 @@ class CreateThreadsTest extends TestCase
         $this->get(route('threads.index') . '?by=foo')
             ->assertSee($threadByFoo->title)
             ->assertDontSee($threadNotByFoo->title);
+    }
+
+    /** @test */
+    public function guests_cannot_delete_threads()
+    {
+        $thread = factory(Thread::class)->create();
+
+        $response = $this->json(
+            'DELETE',
+            route('threads.destroy', $thread->getUrlParams())
+        );
+
+        $response->assertStatus(401);
+
+        $this->assertDatabaseHas('threads', ['id' => $thread->id]);
+    }
+
+    /** @test */
+    public function a_thread_can_be_deleted()
+    {
+        $this->signIn($user = factory(User::class)->create());
+
+        $thread = factory(Thread::class)->create();
+
+        $reply = factory(Reply::class)->create(['thread_id' => $thread->id]);
+
+        $response = $this->json(
+            'DELETE',
+            route('threads.destroy', $thread->getUrlParams())
+        );
+
+        $response->assertStatus(204);
+
+        $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
     }
 }
