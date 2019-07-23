@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
-                @foreach($threads as $thread)
+                @forelse($threads as $thread)
                     <div class="card mb-3">
                         <div class="card-header">
                             <div class="d-flex justify-content-between">
@@ -22,7 +22,9 @@
                             {{ $thread->body }}
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <p>No results...</p>
+                @endforelse
             </div>
         </div>
     </div>

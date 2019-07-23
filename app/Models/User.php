@@ -12,6 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @package App\Models
  *
  * @property \Illuminate\Database\Eloquent\Relations\HasMany $threads
+ * @property int                                             $id
  * @property string                                          $name
  * @property string                                          $email
  * @property string                                          $password
