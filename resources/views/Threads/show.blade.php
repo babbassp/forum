@@ -2,15 +2,29 @@
 
 @section('content')
     <div class="container">
+        <vue-form></vue-form>
         {{-- The thread --}}
         <div class="row">
             <div class="col-md-8">
                 <div class="card mb-3">
                     <div class="card-header">
-                        <h4>
-                            <a href="{{ route('profile', $thread->getCreatorName()) }}">{{ $thread->getCreatorName() }}</a> posted:
-                            {{ $thread->title }}
-                        </h4>
+                        <div class="d-flex justify-content-between">
+                            <div class="p-2">
+                                <h4>
+                                    <a href="{{ route('profile', $thread->getCreatorName()) }}">{{ $thread->getCreatorName() }}</a> posted: {{ $thread->title }}
+                                </h4>
+                            </div>
+                            @can('delete', $thread)
+                                <div class="p2">
+                                    <form method="POST"
+                                          action="{{ route('threads.destroy', $thread->getUrlParams()) }}">
+                                        @csrf()
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-primary">Delete</button>
+                                    </form>
+                                </div>
+                            @endcan
+                        </div>
                     </div>
                     <div class="card-body">
                         {{ $thread->body }}

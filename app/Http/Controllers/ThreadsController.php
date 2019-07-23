@@ -120,15 +120,18 @@ class ThreadsController extends Controller
      */
     public function destroy(Channel $channel, Thread $thread)
     {
-        $thread->replies()->delete();
+        $this->authorize('delete', $thread);
 
+        $thread->replies()->delete();
         $thread->delete();
 
         if (request()->wantsJson()) {
             return response([], 204);
         }
 
-        return back();
+        return redirect(
+            route('threads.index')
+        );
     }
 
     /**
