@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="container">
-        <vue-form></vue-form>
         {{-- The thread --}}
         <div class="row">
             <div class="col-md-8">
@@ -16,12 +15,11 @@
                             </div>
                             @can('delete', $thread)
                                 <div class="p2">
-                                    <form method="POST"
-                                          action="{{ route('threads.destroy', $thread->getUrlParams()) }}">
-                                        @csrf()
-                                        @method('DELETE')
+                                    <vue-form method="DELETE"
+                                              action="{{ route('threads.destroy', $thread->getUrlParams()) }}"
+                                              csrf="{{ csrf_token() }}">
                                         <button type="submit" class="btn btn-primary">Delete</button>
-                                    </form>
+                                    </vue-form>
                                 </div>
                             @endcan
                         </div>
@@ -37,15 +35,18 @@
                 {{ $replies->links() }}
                 {{-- Create a new thread --}}
                 @if( auth()->check() )
-                    <form method="POST" action="{{ route('threads.reply.store', $thread->getUrlParams()) }}">
-                        @csrf
+                    <vue-form method="POST"
+                              action="{{ route('threads.reply.store', $thread->getUrlParams()) }}"
+                              csrf="{{ csrf_token() }}">
                         <div class="form-group">
-                                    <textarea class="form-control rounded" type="text"
-                                              id="body" name="body" placeholder="Add a public reply..."
-                                              rows="5"></textarea>
+                            <textarea class="form-control rounded"
+                                      type="text" id="body" name="body"
+                                      placeholder="Add a public reply..."
+                                      rows="5">
+                            </textarea>
                         </div>
                         <button class="btn btn-outline-primary" type="submit">REPLY</button>
-                    </form>
+                    </vue-form>
                 @else
                     <p>Please <a href="{{ route('login') }}">sign in</a> to participate.</p>
                 @endif

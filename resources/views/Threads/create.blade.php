@@ -7,8 +7,9 @@
                 <div class="card">
                     <div class="card-header">Create a New Thread</div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('threads.store') }}">
-                            @csrf
+                        <vue-form method="POST"
+                                  action="{{ route('threads.store') }}"
+                                  csrf="{{ csrf_token() }}">
                             <div class="form-group">
                                 @error('channel_id')
                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -41,7 +42,7 @@
                                           name="body" rows="8" required>{{ old('body') }}</textarea>
                             </div>
                             <button class="btn btn-outline-primary" type="submit">Submit</button>
-                        </form>
+                        </vue-form>
                     </div>
                 </div>
             </div>
