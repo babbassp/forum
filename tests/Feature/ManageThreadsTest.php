@@ -95,9 +95,12 @@ class ManageThreadsTest extends TestCase
     }
 
     /** @test */
-    public function guests_cannot_delete_threads()
+    public function unauthorized_users_can_not_delete_threads()
     {
-        $thread = factory(Thread::class)->create();
+        // guests
+        $thread = factory(Thread::class)->create([
+            'user_id' => factory(User::class)->create()->id
+        ]);
 
         $response = $this->json(
             'DELETE',
@@ -106,15 +109,25 @@ class ManageThreadsTest extends TestCase
 
         $response->assertStatus(401);
 
+        // another user
+        $this->signIn();
+
+        $response = $this->json(
+            'DELETE',
+            route('threads.destroy', $thread->getUrlParams())
+        );
+
+        $response->assertStatus(403);
+
         $this->assertDatabaseHas('threads', ['id' => $thread->id]);
     }
 
     /** @test */
-    public function a_thread_can_be_deleted()
+    public function authorized_users_can_delete_threads()
     {
-        $this->signIn($user = factory(User::class)->create());
+        $this->signIn();
 
-        $thread = factory(Thread::class)->create();
+        $thread = factory(Thread::class)->create(['user_id' => auth()->id()]);
 
         $reply = factory(Reply::class)->create(['thread_id' => $thread->id]);
 
