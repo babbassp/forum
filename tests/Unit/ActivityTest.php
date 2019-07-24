@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Activity;
 use App\Models\Reply;
 use App\Models\Thread;
-use App\Models\User;
 use Tests\TestCase;
 
 class ActivityTest extends TestCase
@@ -38,15 +37,15 @@ class ActivityTest extends TestCase
 
         $this->assertEquals(2, Activity::count());
 
-//        $this->assertDatabaseHas('activities', [
-//            'type'         => 'created_thread',
-//            'user_id'      => auth()->id(),
-//            'subject_id'   => $thread->id,
-//            'subject_type' => Thread::class
-//        ]);
-//
-//        $activity = Activity::first();
-//
-//        $this->assertEquals($activity->subject->id, $thread->id);
+        $this->assertDatabaseHas('activities', [
+            'type'         => 'created_reply',
+            'user_id'      => auth()->id(),
+            'subject_id'   => $reply->id,
+            'subject_type' => Reply::class
+        ]);
+
+        $activity = Activity::where('subject_id', $reply->id)->first();
+
+        $this->assertEquals($activity->subject->id, $reply->id);
     }
 }
