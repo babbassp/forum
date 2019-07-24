@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Favorable;
+use App\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -19,7 +20,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Reply extends Model
 {
-    use Favorable;
+    use Favorable,
+        RecordsActivity;
 
     /**
      * The attributes that are mass assignable.
