@@ -39,4 +39,23 @@ class Activity extends Model
     {
         return $this->morphTo();
     }
+
+    /**
+     * Get the activity feed for a user.
+     *
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
+     * @param \App\Models\User|\Illuminate\Contracts\Auth\Authenticatable $user
+     * @param  int                                                        $take
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public static function feed(User $user, $take = 50)
+    {
+        return static::where('user_id', $user->id)
+            ->with('subject')
+            ->latest()->limit($take)
+            ->get()
+            ->groupBy(function ($activity) {
+                return $activity->created_at->format('Y-m-d');
+            });
+    }
 }
