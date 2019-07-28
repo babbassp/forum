@@ -16,7 +16,23 @@ class ProfilesController extends Controller
     {
         return view('profiles.show', [
             'profileUser' => $user,
-            'threads'     => $user->threads()->simplePaginate(15)
+            'activities'  => $this->getActivities($user)
         ]);
+    }
+
+    /**
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
+     * @param \App\Models\User $user
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    private function getActivities(User $user)
+    {
+        return $user->activity()
+            ->with('subject')
+            ->latest()->limit(50)
+            ->get()
+            ->groupBy(function ($activity) {
+                return $activity->created_at->format('Y-m-d');
+            });
     }
 }

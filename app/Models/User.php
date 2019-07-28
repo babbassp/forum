@@ -83,4 +83,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Thread::class)->latest();
     }
+
+    /**
+     * Gets the user's activity (created thread, replied to a thread, favorited a reply, etc.).
+     *
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function activity()
+    {
+        return $this->hasMany(Activity::class);
+    }
 }
