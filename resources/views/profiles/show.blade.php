@@ -13,7 +13,6 @@
                         @include("profiles.activities.{$activity->type}")
                     @endforeach
                 @endforeach
-                {{--{{ $threads->links() }}--}}
             </div>
         </div>
     </div>
