@@ -47,7 +47,14 @@ class Thread extends Model
      *
      * @var array
      */
-    protected $with = ['channel'];
+    protected $with = ['channel', 'creator'];
+
+    /**
+     * The relationship counts that should be eager loaded on every query.
+     *
+     * @var array
+     */
+    protected $withCount = ['replies'];
 
     /**
      * The "booting" method of the model.
@@ -58,12 +65,8 @@ class Thread extends Model
     {
         parent::boot();
 
-        static::addGlobalScope('replyCount', function ($builder) {
-            $builder->withCount('replies');
-        });
-
-        static::addGlobalScope('creator', function ($builder) {
-            $builder->with('creator');
+        static::deleting(function ($thread) {
+            $thread->replies->each->delete();
         });
     }
 
