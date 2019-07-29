@@ -47,14 +47,14 @@ class RepliesController extends Controller
      * @param Thread                    $thread
      * @return \Illuminate\Http\Response
      */
-    public function store($channel, Thread $thread, ReplyRequest $request)
+    public function store(?$channel, Thread $thread, ReplyRequest $request)
     {
         $thread->replies()->create([
             'body'    => $request->input('body', ''),
             'user_id' => auth()->id()
         ]);
 
-        return back();
+        return back()->with('flash', 'Your reply has been saved.');
     }
 
     /**

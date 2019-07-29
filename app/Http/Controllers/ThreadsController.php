@@ -68,7 +68,8 @@ class ThreadsController extends Controller
 
         $thread = Thread::create($validated);
 
-        return redirect(route('threads.show', $thread->getUrlParams()));
+        return redirect(route('threads.show', $thread->getUrlParams()))
+            ->with('flash', 'The thread has been published.');
     }
 
     /**

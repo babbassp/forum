@@ -26,6 +26,8 @@
     <main class="py-4 mb-5">
         @yield('content')
     </main>
+
+    <flash status="success">{{ session('flash') }}</flash>
 </div>
 </body>
 </html>
