@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ReplyRequest;
+use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class RepliesController extends Controller
     public function __construct()
     {
         $this->middleware('auth')
-            ->only('store');
+            ->only(['store', 'destroy']);
     }
 
     /**
@@ -42,12 +43,12 @@ class RepliesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param                           $channel
-     * @param  ReplyRequest             $request
-     * @param Thread                    $thread
+     * @param               $channel
+     * @param  ReplyRequest $request
+     * @param Thread        $thread
      * @return \Illuminate\Http\Response
      */
-    public function store(?$channel, Thread $thread, ReplyRequest $request)
+    public function store($channel, Thread $thread, ReplyRequest $request)
     {
         $thread->replies()->create([
             'body'    => $request->input('body', ''),
@@ -96,9 +97,14 @@ class RepliesController extends Controller
      *
      * @param  \App\Models\Reply $reply
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Reply $reply)
     {
-        //
+        $this->authorize('delete', $reply);
+
+        $reply->delete();
+
+        return back();
     }
 }

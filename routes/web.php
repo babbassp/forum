@@ -29,17 +29,19 @@ Route::delete('threads/{channel}/{thread}', [
 ]);
 
 /////////////// Favorites ////////////////////////
+Route::delete('reply/{reply}', 'RepliesController@destroy')
+    ->name('reply.destroy');
 Route::post('replies/{reply}/favorites', [
     'as'   => 'replies.favorites',
     'uses' => 'FavoritesController@store'
 ]);
 
 /////////////// Replies /////////////////////////
-Route::get('threads/{channel}/{thread}/replies', [
-    'as'  => 'threads.replies',
-    'use' => 'RepliesController@show'
+Route::get('threads/{channel?}/{thread}/replies', [
+    'as'   => 'threads.replies',
+    'uses' => 'RepliesController@show'
 ]);
-Route::post('threads/{channel}/{thread}/replies', 'RepliesController@store')
+Route::post('threads/{channel?}/{thread}/replies', 'RepliesController@store')
     ->name('threads.reply.store');
 
 /////////// Profiles ////////////////////////////
