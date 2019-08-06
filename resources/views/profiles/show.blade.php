@@ -10,7 +10,9 @@
                 @foreach($activities as $date => $activitiesOnThisDate)
                     <h4 class="text-white">On {{ $date }}:</h4>
                     @foreach($activitiesOnThisDate as $activity)
-                        @include("profiles.activities.{$activity->type}")
+                        @if(view()->exists("profiles.activities.{$activity->type}"))
+                            @include("profiles.activities.{$activity->type}")
+                        @endif
                     @endforeach
                 @endforeach
             </div>
