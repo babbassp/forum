@@ -85,6 +85,17 @@ class User extends Authenticatable
     }
 
     /**
+     * Get a user's replies.
+     *
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function replies()
+    {
+        return $this->hasMany(Reply::class);
+    }
+
+    /**
      * Gets the user's activity (created thread, replied to a thread, favorited a reply, etc.).
      *
      * @author Brandon Abbasspour <babbassp@umflint.edu>

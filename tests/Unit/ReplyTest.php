@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Favorite;
 use App\Models\Reply;
 use App\Models\User;
 use Tests\TestCase;
@@ -22,5 +23,22 @@ class ReplyTest extends TestCase
         $reply = factory(Reply::class)->create();
 
         $this->assertInstanceOf(User::class, $reply->owner);
+    }
+
+    /** @test */
+    public function a_reply_that_is_deleted_also_deletes_the_favorites_associated_with_it()
+    {
+        $this->signIn();
+
+        $reply = factory(Reply::class)->create(['user_id' => auth()->id()]);
+
+        $favorite = factory(Favorite::class)->create([
+            'favorited_id'   => $reply,
+            'favorited_type' => get_class($reply)
+        ]);
+
+        $this->delete(route('reply.destroy', $reply->id));
+
+        $this->assertDatabaseMissing('favorites', ['id' => $favorite->id]);
     }
 }

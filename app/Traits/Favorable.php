@@ -7,6 +7,20 @@ use App\Models\Favorite;
 trait Favorable
 {
     /**
+     * Boot the trait.
+     */
+    protected static function bootFavorable()
+    {
+        if (auth()->guest()) {
+            return;
+        }
+
+        static::deleting(function ($model) {
+            $model->favorites()->delete();
+        });
+    }
+
+    /**
      * Get the reply's favorites.
      *
      * @author Brandon Abbasspour <babbassp@umflint.edu>
