@@ -9,14 +9,19 @@
         },
         methods: {
             update() {
-                axios.patch(
-                    '/reply/' + this.attributes.id,
-                    {body: this.body}
-                );
+                if (this.body !== '') {
+                    axios.patch(
+                        '/reply/' + this.attributes.id,
+                        {body: this.body}
+                    ).then(function () {
+                        flash('Reply updated!');
+                    }).catch(function (error) {
+                        console.log(error.message);
+                        flash('Reply could not be updated!');
+                    });
 
-                this.editing = false;
-
-                flash('Reply updated!');
+                    this.editing = false;
+                }
             }
         }
     }

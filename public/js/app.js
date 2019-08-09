@@ -1998,11 +1998,17 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     update: function update() {
-      axios.patch('/reply/' + this.attributes.id, {
-        body: this.body
-      });
-      this.editing = false;
-      flash('Reply updated!');
+      if (this.body !== '') {
+        axios.patch('/reply/' + this.attributes.id, {
+          body: this.body
+        }).then(function () {
+          flash('Reply updated!');
+        })["catch"](function (error) {
+          console.log(error.message);
+          flash('Reply could not be updated!');
+        });
+        this.editing = false;
+      }
     }
   }
 });

@@ -83,18 +83,18 @@ class RepliesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Models\Reply        $reply
+     * @param \App\Http\Requests\ReplyRequest $request
+     * @param  \App\Models\Reply              $reply
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Request $request, Reply $reply)
+    public function update(ReplyRequest $request, Reply $reply)
     {
         $this->authorize('update', $reply);
 
-        $reply->update([
-            'body' => $request->input('body')
-        ]);
+        $reply->update(
+            $request->validated()
+        );
 
         if ($request->isJson() || $request->ajax()) {
             return response($reply, 201);
@@ -114,8 +114,13 @@ class RepliesController extends Controller
     {
         $this->authorize('delete', $reply);
 
-        $reply->delete();
+        $message = 'The reply has been deleted.';
+        try {
+            $reply->delete();
+        }catch(\Exception $e) {
+            $message = 'The reply could not be deleted.';
+        }
 
-        return back();
+        return back()->with('flash', $message);
     }
 }

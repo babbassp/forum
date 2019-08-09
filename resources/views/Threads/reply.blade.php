@@ -33,7 +33,7 @@
                 <div class="d-flex">
                     <div class="form-group">
                         <div class="p2 mr-1">
-                            <button class="btn btn-sm btn-link" type="submit" v-on:click="update()">Update</button>
+                            <button class="btn btn-sm btn-link" type="submit" v-bind:disabled="!body" v-on:click="update()">Update</button>
                         </div>
                     </div>
                     <div class="form-group">
@@ -49,7 +49,9 @@
             <div class="card-footer">
                 <div class="d-flex">
                     <div class="p2 mr-1">
-                        <button class="btn btn-sm btn-outline-primary" type="submit" v-on:click="editing = true">Edit</button>
+                        <button class="btn btn-sm btn-outline-primary" type="submit"
+                                v-on:click="editing = true">Edit
+                        </button>
                     </div>
                     <div class="p2">
                         <vue-form method="DELETE"
