@@ -34,7 +34,7 @@
                 @endforeach
                 {{ $replies->links() }}
                 {{-- Create a new thread --}}
-                @if( auth()->check() )
+                @auth
                     <vue-form method="POST"
                               action="{{ route('threads.reply.store', $thread->getUrlParams()) }}"
                               csrf="{{ csrf_token() }}">
@@ -47,15 +47,17 @@
                         </div>
                         <button class="btn btn-outline-primary" type="submit">REPLY</button>
                     </vue-form>
-                @else
+                @endauth
+                @guest
                     <p>Please <a href="{{ route('login') }}">sign in</a> to participate.</p>
-                @endif
+                @endguest
             </div>
             <div class="col-md-4">
                 <div class="card mb-3">
                     <div class="card-body">
                         <p>This thread was published {{ $thread->created_at->diffForHumans() }} by
-                            <a href="#">{{ $thread->creator->name }}</a> and currently has {{ $thread->replies_count }} {{ Str::plural('reply', $thread->replies_count) }}.</p>
+                            <a href="#">{{ $thread->creator->name }}</a> and currently has {{ $thread->replies_count }} {{ Str::plural('reply', $thread->replies_count) }}.
+                        </p>
                     </div>
                 </div>
             </div>
