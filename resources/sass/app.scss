@@ -8,3 +8,7 @@
 @import '~bootstrap/scss/bootstrap';
 // Overwrites
 @import 'overwrites';
+
+[v-cloak] > * {
+  display: none;
+}

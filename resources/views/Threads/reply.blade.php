@@ -1,37 +1,67 @@
-<div id="reply-{{ $reply->id }}" class="card mb-3">
-    <div class="card-header">
-        <div class="d-flex">
-            <div class="p2 mr-auto">
-                <h4>
-                    <a href="{{ route('profile', $reply->owner->name) }}">
-                        {{ $reply->owner->name }}
-                    </a> said {{ $reply->created_at->diffForHumans() }}...
-                </h4>
-            </div>
-            @if(auth()->id() == $reply->user_id)
-                <div class="p2 mr-1">
-                    <vue-form method="DELETE"
-                              action="{{ route('reply.destroy', $reply->id) }}"
+<reply :attributes="{{$reply}}" inline-template v-cloak>
+    <div id="reply-{{ $reply->id }}" class="card mb-3">
+        <div class="card-header">
+            <div class="d-flex">
+                <div class="p2 mr-auto">
+                    <h4>
+                        <a href="{{ route('profile', $reply->owner->name) }}">
+                            {{ $reply->owner->name }}
+                        </a> said {{ $reply->created_at->diffForHumans() }}...
+                    </h4>
+                </div>
+                <div class="p2">
+                    <vue-form method="POST"
+                              action="{{ route('replies.favorites', $reply->id) }}"
                               csrf="{{ csrf_token() }}">
-                        <button class="btn btn-primary"
-                                type="submit">Delete
+                        <button class="btn btn-link" type="submit" {{ $reply->isFavorited() ? 'disabled' : '' }}>
+                            @if($reply->isFavorited())
+                                <i class="fa fa-thumbs-up"></i>
+                            @else
+                                <i class="fa fa-thumbs-o-up"></i>
+                            @endif
                         </button>
+                        {{ $reply->favorites_count }}
                     </vue-form>
                 </div>
-            @endif
-            <div class="p2">
-                <vue-form method="POST"
-                          action="{{ route('replies.favorites', $reply->id) }}"
-                          csrf="{{ csrf_token() }}">
-                    <button class="btn btn-outline-primary"
-                            type="submit" {{ $reply->isFavorited() ? 'disabled' : '' }}>
-                        {{ $reply->favorites_count }} {{ Str::plural('Favorite', $reply->favorites_count) }}
-                    </button>
-                </vue-form>
             </div>
         </div>
+        <div class="card-body">
+            <div v-if="editing">
+                <div class="form-group">
+                    <textarea class="form-control" name="textarea-reply" id="textarea-reply" v-model="body"></textarea>
+                </div>
+                <div class="d-flex">
+                    <div class="form-group">
+                        <div class="p2 mr-1">
+                            <button class="btn btn-sm btn-link" type="submit" v-on:click="update()">Update</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="p2">
+                            <button class="btn btn-sm" v-on:click="editing = false">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-else v-text="body"></div>
+        </div>
+        @can('delete', $reply)
+            <div class="card-footer">
+                <div class="d-flex">
+                    <div class="p2 mr-1">
+                        <button class="btn btn-sm btn-outline-primary" type="submit" v-on:click="editing = true">Edit</button>
+                    </div>
+                    <div class="p2">
+                        <vue-form method="DELETE"
+                                  action="{{ route('reply.destroy', $reply->id) }}"
+                                  csrf="{{ csrf_token() }}">
+                            <button class="btn btn-sm btn-outline-danger"
+                                    type="submit">Delete
+                            </button>
+                        </vue-form>
+                    </div>
+                </div>
+            </div>
+        @endcan
     </div>
-    <div class="card-body">
-        {{ $reply->body }}
-    </div>
-</div>
+</reply>

@@ -59,7 +59,7 @@
 <style>
     .alert-flash {
         position: fixed;
-        right: 0;
-        bottom: 0;
+        right: 1em;
+        bottom: 1em;
     }
 </style>

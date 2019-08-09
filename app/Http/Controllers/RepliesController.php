@@ -86,10 +86,21 @@ class RepliesController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @param  \App\Models\Reply        $reply
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, Reply $reply)
     {
-        //
+        $this->authorize('update', $reply);
+
+        $reply->update([
+            'body' => $request->input('body')
+        ]);
+
+        if ($request->isJson() || $request->ajax()) {
+            return response($reply, 201);
+        }
+
+        return back();
     }
 
     /**

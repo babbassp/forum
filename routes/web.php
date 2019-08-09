@@ -35,6 +35,8 @@ Route::post('replies/{reply}/favorites', [
     'as'   => 'replies.favorites',
     'uses' => 'FavoritesController@store'
 ]);
+Route::patch('reply/{reply}', 'RepliesController@update')
+    ->name('reply.update');
 
 /////////////// Replies /////////////////////////
 Route::get('threads/{channel?}/{thread}/replies', [
