@@ -87,11 +87,13 @@ class FavoritesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Favorite $favorite
-     * @return \Illuminate\Http\Response
+     * @param \App\Models\Reply $reply
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Favorite $favorite)
+    public function destroy(Reply $reply)
     {
-        //
+        $reply->unfavorite();
+
+        return back();
     }
 }

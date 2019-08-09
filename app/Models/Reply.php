@@ -34,6 +34,8 @@ class Reply extends Model
         'body'
     ];
 
+    protected $appends = ['favoritesCount', 'isFavorited'];
+
     /**
      * The relationships that should always be loaded.
      *

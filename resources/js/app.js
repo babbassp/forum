@@ -22,6 +22,7 @@ window.Vue = require('vue');
 Vue.component('vue-form', require('./components/Form.vue').default);
 Vue.component('flash', require('./components/Flash.vue').default);
 Vue.component('reply', require('./components/Reply.vue').default);
+Vue.component('favorite', require('./components/Favorite.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

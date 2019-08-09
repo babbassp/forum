@@ -10,18 +10,7 @@
                     </h4>
                 </div>
                 <div class="p2">
-                    <vue-form method="POST"
-                              action="{{ route('replies.favorites', $reply->id) }}"
-                              csrf="{{ csrf_token() }}">
-                        <button class="btn btn-link" type="submit" {{ $reply->isFavorited() ? 'disabled' : '' }}>
-                            @if($reply->isFavorited())
-                                <i class="fa fa-thumbs-up"></i>
-                            @else
-                                <i class="fa fa-thumbs-o-up"></i>
-                            @endif
-                        </button>
-                        {{ $reply->favorites_count }}
-                    </vue-form>
+                    <favorite :reply="{{ $reply }}"></favorite>
                 </div>
             </div>
         </div>

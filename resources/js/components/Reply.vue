@@ -1,4 +1,6 @@
 <script>
+    import Favorite from './Favorite.vue';
+
     export default {
         props: ['attributes'],
         data() {
@@ -13,16 +15,14 @@
                     axios.patch(
                         '/reply/' + this.attributes.id,
                         {body: this.body}
-                    ).then(function () {
-                        flash('Reply updated!');
-                    }).catch(function (error) {
-                        console.log(error.message);
-                        flash('Reply could not be updated!');
-                    });
-
+                    );
                     this.editing = false;
+                    flash('Reply updated!');
                 }
             }
+        },
+        components: {
+            Favorite
         }
     }
 </script>
