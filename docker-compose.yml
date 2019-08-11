@@ -23,7 +23,8 @@ services:
     volumes:
       - ./docker/data/mysql:/var/lib/mysql
     environment:
-      MYSQL_DATABASE: app
+      MYSQL_DATABASE: forum
+      MYSQL_ROOT_USERNAME: root
       MYSQL_ROOT_PASSWORD: root
 
   redis:
