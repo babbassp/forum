@@ -37,7 +37,7 @@ Route::delete('replies/{reply}/favorites', 'FavoritesController@destroy')
 /////////////// Replies /////////////////////////
 Route::delete('replies/{reply}', 'RepliesController@destroy')
     ->name('reply.destroy');
-Route::patch('reply/{reply}', 'RepliesController@update')
+Route::patch('replies/{reply}', 'RepliesController@update')
     ->name('reply.update');
 Route::get('threads/{channel?}/{thread}/replies', [
     'as'   => 'threads.replies',

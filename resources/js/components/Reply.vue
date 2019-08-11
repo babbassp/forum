@@ -9,16 +9,33 @@
                 body: this.attributes.body
             };
         },
+        created() {
+            this.original = this.attributes.body;
+        },
         methods: {
             update() {
                 if (this.body !== '') {
                     axios.patch(
-                        '/reply/' + this.attributes.id,
+                        '/replies/' + this.attributes.id,
                         {body: this.body}
                     );
                     this.editing = false;
-                    flash('Reply updated!');
+                    flash('Reply updated.');
                 }
+            },
+            cancel() {
+                this.body = this.original;
+                this.editing = false;
+            },
+            edit() {
+                this.editing = true;
+            },
+            destroy() {
+                axios.delete('/replies/' + this.attributes.id);
+
+                $(this.$el).fadeOut(500, function () {
+                    flash('Reply deleted.');
+                });
             }
         },
         components: {

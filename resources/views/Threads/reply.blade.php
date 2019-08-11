@@ -24,12 +24,12 @@
                 <div class="d-flex">
                     <div class="form-group">
                         <div class="p2 mr-1">
-                            <button class="btn btn-sm btn-link" type="submit" v-bind:disabled="!body" v-on:click="update()">Update</button>
+                            <button class="btn btn-sm btn-link" type="submit" :disabled="!body" @click="update()">Update</button>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="p2">
-                            <button class="btn btn-sm" v-on:click="editing = false">Cancel</button>
+                            <button class="btn btn-sm" @click="cancel()">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -41,17 +41,13 @@
                 <div class="d-flex">
                     <div class="p2 mr-1">
                         <button class="btn btn-sm btn-outline-primary" type="submit"
-                                v-on:click="editing = true">Edit
+                                @click="edit()">Edit
                         </button>
                     </div>
                     <div class="p2">
-                        <vue-form method="DELETE"
-                                  action="{{ route('reply.destroy', $reply->id) }}"
-                                  csrf="{{ csrf_token() }}">
-                            <button class="btn btn-sm btn-outline-danger"
-                                    type="submit">Delete
-                            </button>
-                        </vue-form>
+                        <button class="btn btn-sm btn-outline-danger" type="submit"
+                                @click="destroy()">Delete
+                        </button>
                     </div>
                 </div>
             </div>

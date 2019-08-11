@@ -2059,15 +2059,31 @@ __webpack_require__.r(__webpack_exports__);
       body: this.attributes.body
     };
   },
+  created: function created() {
+    this.original = this.attributes.body;
+  },
   methods: {
     update: function update() {
       if (this.body !== '') {
-        axios.patch('/reply/' + this.attributes.id, {
+        axios.patch('/replies/' + this.attributes.id, {
           body: this.body
         });
         this.editing = false;
-        flash('Reply updated!');
+        flash('Reply updated.');
       }
+    },
+    cancel: function cancel() {
+      this.body = this.original;
+      this.editing = false;
+    },
+    edit: function edit() {
+      this.editing = true;
+    },
+    destroy: function destroy() {
+      axios["delete"]('/replies/' + this.attributes.id);
+      $(this.$el).fadeOut(500, function () {
+        flash('Reply deleted.');
+      });
     }
   },
   components: {
