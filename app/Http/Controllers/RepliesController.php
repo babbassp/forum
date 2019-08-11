@@ -44,7 +44,7 @@ class RepliesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param               $channel
-     * @param  ReplyRequest $request
+     * @param ReplyRequest  $request
      * @param Thread        $thread
      * @return \Illuminate\Http\Response
      */
@@ -61,7 +61,7 @@ class RepliesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Reply $reply
+     * @param \App\Models\Reply $reply
      * @return \Illuminate\Http\Response
      */
     public function show(Reply $reply)
@@ -72,7 +72,7 @@ class RepliesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Reply $reply
+     * @param \App\Models\Reply $reply
      * @return \Illuminate\Http\Response
      */
     public function edit(Reply $reply)
@@ -84,7 +84,7 @@ class RepliesController extends Controller
      * Update the specified resource in storage.
      *
      * @param \App\Http\Requests\ReplyRequest $request
-     * @param  \App\Models\Reply              $reply
+     * @param \App\Models\Reply               $reply
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
@@ -106,7 +106,7 @@ class RepliesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Reply $reply
+     * @param \App\Models\Reply $reply
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */

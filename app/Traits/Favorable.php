@@ -23,8 +23,8 @@ trait Favorable
     /**
      * Get the favorites.
      *
-     * @author Brandon Abbasspour <babbassp@umflint.edu>
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
      */
     public function favorites()
     {
@@ -32,8 +32,8 @@ trait Favorable
     }
 
     /**
-     * @author Brandon Abbasspour <babbassp@umflint.edu>
      * @return mixed
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
      */
     public function favorite()
     {
@@ -43,8 +43,8 @@ trait Favorable
     }
 
     /**
-     * @author Brandon Abbasspour <babbassp@umflint.edu>
      * @return mixed
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
      */
     public function unfavorite()
     {
@@ -56,19 +56,19 @@ trait Favorable
     /**
      * Check if the user who is signed in has favorited the reply.
      *
-     * @author Brandon Abbasspour <babbassp@umflint.edu>
      * @return bool
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
      */
     public function isFavorited()
     {
-        return $this->favorites->where('user_id', auth()->id())->isNotEmpty();
+        return $this->favorites()->where('user_id', auth()->id())->isNotEmpty();
     }
 
     /**
      * Returns true if favorited, otherwise return false.
      *
-     * @author Brandon Abbasspour <babbassp@umflint.edu>
      * @return bool
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
      */
     public function getIsFavoritedAttribute()
     {
@@ -78,8 +78,8 @@ trait Favorable
     /**
      * Get the number of favorites.
      *
-     * @author Brandon Abbasspour <babbassp@umflint.edu>
      * @return int
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
      */
     public function getFavoritesCountAttribute()
     {

@@ -29,7 +29,7 @@ class ThreadsController extends Controller
      * Display a listing of the resource.
      *
      * @param \App\Models\Channel        $channel
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request   $request
      * @param \App\Filters\ThreadFilters $filters
      * @return \Illuminate\Http\Response|\Illuminate\Database\Eloquent\Collection
      */
@@ -57,9 +57,9 @@ class ThreadsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @throws
-     * @param  \App\Http\Requests\ThreadRequest $request
+     * @param \App\Http\Requests\ThreadRequest $request
      * @return \Illuminate\Http\Response
+     * @throws
      */
     public function store(ThreadRequest $request)
     {
@@ -76,7 +76,7 @@ class ThreadsController extends Controller
      * Display the specified resource.
      *
      * @param                     $channel
-     * @param  \App\Models\Thread $thread
+     * @param \App\Models\Thread  $thread
      * @return \Illuminate\Http\Response
      */
     public function show($channel, Thread $thread)
@@ -91,7 +91,7 @@ class ThreadsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Thread $thread
+     * @param \App\Models\Thread $thread
      * @return \Illuminate\Http\Response
      */
     public function edit(Thread $thread)
@@ -102,8 +102,8 @@ class ThreadsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Models\Thread       $thread
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Thread       $thread
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Thread $thread)
@@ -115,7 +115,7 @@ class ThreadsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Models\Channel $channel
-     * @param  \App\Models\Thread $thread
+     * @param \App\Models\Thread  $thread
      * @return \Illuminate\Http\Response|\Illuminate\Contracts\Routing\ResponseFactory
      * @throws \Exception
      */
@@ -135,10 +135,10 @@ class ThreadsController extends Controller
     }
 
     /**
-     * @author Brandon Abbasspour <babbassp@umflint.edu>
      * @param \App\Models\Channel        $channel
      * @param \App\Filters\ThreadFilters $filters
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Relations\HasMany
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
      */
     private function getThreads(Channel $channel, ThreadFilters $filters)
     {
