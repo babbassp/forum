@@ -46,4 +46,33 @@ class FavoritesTest extends TestCase
         $reply->unfavorite();
         $this->assertCount(0, $reply->refresh()->favorites);
     }
+
+    /** @test */
+    public function it_creates_an_activity()
+    {
+        $this->signIn();
+
+        $reply = factory(Reply::class)->create([
+            'user_id' => auth()->id()
+        ]);
+
+        $reply->favorite();
+
+        $this->assertDatabaseHas('activities', ['type' => 'created_favorite']);
+    }
+
+    /** @test */
+    public function deleting_the_favorite_deletes_the_activity()
+    {
+        $this->signIn();
+
+        $reply = factory(Reply::class)->create([
+            'user_id' => auth()->id()
+        ]);
+
+        $reply->favorite();
+        $reply->unfavorite();
+
+        $this->assertDatabaseMissing('activities', ['type' => 'created_favorite']);
+    }
 }

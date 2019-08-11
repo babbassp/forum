@@ -26,7 +26,7 @@ class ReplyTest extends TestCase
     }
 
     /** @test */
-    public function a_reply_that_is_deleted_also_deletes_the_favorites_associated_with_it()
+    public function deleting_a_reply_deletes_its_favorites_and_activity()
     {
         $this->signIn();
 
@@ -40,5 +40,7 @@ class ReplyTest extends TestCase
         $this->delete(route('reply.destroy', $reply->id));
 
         $this->assertDatabaseMissing('favorites', ['id' => $favorite->id]);
+
+        $this->assertDatabaseMissing('activities', ['id' => 'created_reply']);
     }
 }
