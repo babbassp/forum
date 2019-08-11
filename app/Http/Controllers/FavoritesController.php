@@ -47,6 +47,10 @@ class FavoritesController extends Controller
     {
         $reply->favorite();
 
+        if (request()->wantsJson()) {
+            return response('The reply has been favorited.');
+        }
+
         return back();
     }
 
@@ -93,6 +97,10 @@ class FavoritesController extends Controller
     public function destroy(Reply $reply)
     {
         $reply->unfavorite();
+
+        if (request()->wantsJson()) {
+            return response('The reply has been unfavorited.');
+        }
 
         return back();
     }

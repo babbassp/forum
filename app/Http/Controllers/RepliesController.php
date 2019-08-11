@@ -55,7 +55,7 @@ class RepliesController extends Controller
             'user_id' => auth()->id()
         ]);
 
-        return back()->with('flash', 'Your reply has been saved.');
+        return back()->with('flash', 'The reply has been saved.');
     }
 
     /**
@@ -96,8 +96,8 @@ class RepliesController extends Controller
             $request->validated()
         );
 
-        if ($request->isJson() || $request->ajax()) {
-            return response($reply, 201);
+        if (request()->wantsJson()) {
+            return response(['status' => 'The reply has been updated.']);
         }
 
         return back();
@@ -107,7 +107,7 @@ class RepliesController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Models\Reply $reply
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Reply $reply)
@@ -117,6 +117,10 @@ class RepliesController extends Controller
         $message = 'The reply has been deleted.';
         try {
             $reply->delete();
+
+            if (request()->wantsJson()) {
+                return response(['status' => $message]);
+            }
         }catch(\Exception $e) {
             $message = 'The reply could not be deleted.';
         }
