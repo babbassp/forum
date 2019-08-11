@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Activity;
 use App\Models\Reply;
 use App\Models\Thread;
-use App\Models\User;
 use Carbon\Carbon;
 use Tests\TestCase;
 

@@ -42,8 +42,9 @@ trait RecordsActivity
      * Record new activity for the model.
      *
      * @param string $event
+     * @return void
      */
-    protected function recordActivity(string $event): void
+    protected function recordActivity(string $event)
     {
         $this->activity()->create([
             'user_id' => auth()->id(),

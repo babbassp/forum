@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Favorite;
 use App\Models\Reply;
 use Tests\TestCase;
 
