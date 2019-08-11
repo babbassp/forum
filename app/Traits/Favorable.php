@@ -61,7 +61,7 @@ trait Favorable
      */
     public function isFavorited()
     {
-        return $this->favorites()->where('user_id', auth()->id())->isNotEmpty();
+        return $this->favorites()->where('user_id', auth()->id())->exists();
     }
 
     /**
