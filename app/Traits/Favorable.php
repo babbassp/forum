@@ -16,7 +16,7 @@ trait Favorable
         }
 
         static::deleting(function ($model) {
-            $model->favorites()->delete();
+            $model->favorites->each->delete();
         });
     }
 
@@ -49,7 +49,7 @@ trait Favorable
     public function unfavorite()
     {
         if ($this->isFavorited()) {
-            return $this->favorites()->where('user_id', auth()->id())->delete();
+            return $this->favorites()->where('user_id', auth()->id())->get()->each->delete();
         }
     }
 

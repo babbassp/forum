@@ -9,9 +9,11 @@
                         </a> said {{ $reply->created_at->diffForHumans() }}...
                     </h4>
                 </div>
-                <div class="p2">
-                    <favorite :reply="{{ $reply }}"></favorite>
-                </div>
+                @auth
+                    <div class="p2">
+                        <favorite :reply="{{ $reply }}"></favorite>
+                    </div>
+                @endauth
             </div>
         </div>
         <div class="card-body">
