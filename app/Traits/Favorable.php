@@ -32,24 +32,30 @@ trait Favorable
     }
 
     /**
-     * @return mixed
+     * @return void
      * @author Brandon Abbasspour <babbassp@umflint.edu>
      */
     public function favorite()
     {
         if (!$this->isFavorited()) {
-            return $this->favorites()->create(['user_id' => auth()->id()]);
+            $this->favorites()->create(['user_id' => auth()->id()]);
         }
     }
 
     /**
-     * @return mixed
+     * @return void
      * @author Brandon Abbasspour <babbassp@umflint.edu>
      */
     public function unfavorite()
     {
         if ($this->isFavorited()) {
-            return $this->favorites()->where('user_id', auth()->id())->get()->each->delete();
+            $this
+                ->favorites()
+                ->where('user_id', auth()->id())
+                ->get()
+                ->each(function ($favorite) {
+                    $favorite->delete();
+                });
         }
     }
 
