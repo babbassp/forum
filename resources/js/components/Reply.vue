@@ -22,7 +22,9 @@
                 <div class="d-flex">
                     <div class="form-group">
                         <div class="p2 mr-1">
-                            <button class="btn btn-sm btn-link" type="submit" :disabled="!body" @click="update()">Update</button>
+                            <button class="btn btn-sm btn-link"
+                                    type="submit" :disabled="!body" @click="update()">Update
+                            </button>
                         </div>
                     </div>
                     <div class="form-group">
@@ -86,7 +88,10 @@
                         '/replies/' + this.data.id,
                         {body: this.body}
                     );
+
+                    this.original = this.body;
                     this.editing = false;
+
                     flash('Reply updated.');
                 }
             },

@@ -2209,6 +2209,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['data'],
@@ -2241,6 +2243,7 @@ __webpack_require__.r(__webpack_exports__);
         axios.patch('/replies/' + this.data.id, {
           body: this.body
         });
+        this.original = this.body;
         this.editing = false;
         flash('Reply updated.');
       }
@@ -38533,7 +38536,7 @@ var render = function() {
                           }
                         }
                       },
-                      [_vm._v("Update")]
+                      [_vm._v("Update\n                        ")]
                     )
                   ])
                 ]),
