@@ -11,7 +11,9 @@
                             <div class="d-flex justify-content-between">
                                 <div class="p-2">
                                     <h4>
-                                        <a href="{{ route('profile', $thread->getCreatorName()) }}">{{ $thread->getCreatorName() }}</a> posted: {{ $thread->title }}
+                                        <a href="{{ route('profile', $thread->getCreatorName()) }}">
+                                            {{ $thread->getCreatorName() }}
+                                        </a> posted: {{ $thread->title }}
                                     </h4>
                                 </div>
                                 @can('delete', $thread)
@@ -35,7 +37,8 @@
                     <div class="card mb-3">
                         <div class="card-body">
                             <p>This thread was published {{ $thread->created_at->diffForHumans() }} by
-                                <a href="#">{{ $thread->creator->name }}</a> and currently has <span v-text="repliesCount"></span> {{ Str::plural('reply', $thread->replies_count) }}.
+                                <a href="#">{{ $thread->creator->name }}</a>
+                                and currently has <span v-text="repliesCount"></span> <span v-text="repliesString"></span>.
                             </p>
                         </div>
                     </div>

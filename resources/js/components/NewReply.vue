@@ -6,7 +6,7 @@
                       placeholder="Add a public reply..."
                       rows="5" v-model="body" required>
             </textarea>
-            <button class="btn btn-primary mt-2" type="submit" @click="add()" :disabled="isDisabled">REPLY</button>
+            <button class="btn btn-primary mt-2" type="submit" @click="add()" :disabled="!body">REPLY</button>
         </div>
         <p class="text-center" v-else>Please <a href="/login">sign in</a> to participate.</p>
     </div>
@@ -24,9 +24,6 @@
         },
 
         computed: {
-            isDisabled() {
-                return this.body.length < 1;
-            },
             signedIn() {
                 return window.App.signedIn;
             }

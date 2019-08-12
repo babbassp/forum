@@ -16,6 +16,12 @@
             };
         },
 
+        computed: {
+            repliesString() {
+                return pluralize('replies', this.repliesCount);
+            }
+        },
+
         components: {Replies}
     }
 </script>
