@@ -29,27 +29,7 @@
                             {{ $thread->body }}
                         </div>
                     </div>
-                    {{-- Replies to the thread --}}
-                    <replies :data="{{ $thread->replies }}" @remove="repliesCount--"></replies>
-                    {{--                {{ $replies->links() }}--}}
-                    {{-- Create a new thread --}}
-                    @auth
-                        <vue-form method="POST"
-                                  action="{{ route('threads.reply.store', $thread->getUrlParams()) }}"
-                                  csrf="{{ csrf_token() }}">
-                            <div class="form-group">
-                            <textarea class="form-control rounded"
-                                      type="text" id="body" name="body"
-                                      placeholder="Add a public reply..."
-                                      rows="5">
-                            </textarea>
-                            </div>
-                            <button class="btn btn-outline-primary" type="submit" @click="repliesCount++">REPLY</button>
-                        </vue-form>
-                    @endauth
-                    @guest
-                        <p>Please <a href="{{ route('login') }}">sign in</a> to participate.</p>
-                    @endguest
+                    <replies :data="{{ $thread->replies }}" @remove="repliesCount--" @add="repliesCount++"></replies>
                 </div>
                 <div class="col-md-4">
                     <div class="card mb-3">

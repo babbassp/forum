@@ -50,10 +50,14 @@ class RepliesController extends Controller
      */
     public function store($channel, Thread $thread, ReplyRequest $request)
     {
-        $thread->replies()->create([
-            'body'    => $request->input('body', ''),
+        $newReply = $thread->replies()->create([
+            'body'    => $request->input('body'),
             'user_id' => auth()->id()
         ]);
+
+        if ($request->expectsJson()) {
+            return $newReply->load('owner');
+        }
 
         return back()->with('flash', 'The reply has been saved.');
     }
