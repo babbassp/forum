@@ -38267,7 +38267,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    _vm._l(_vm.items, function(reply) {
+    _vm._l(_vm.items, function(reply, index) {
       return _c(
         "div",
         { key: reply.id },
@@ -38276,7 +38276,7 @@ var render = function() {
             attrs: { data: reply },
             on: {
               deleted: function($event) {
-                return _vm.remove()
+                return _vm.remove(index)
               }
             }
           })
