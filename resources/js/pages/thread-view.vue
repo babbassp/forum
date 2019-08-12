@@ -1,7 +1,3 @@
-<template>
-
-</template>
-
 <script>
     import Replies from '../components/Replies.vue';
 

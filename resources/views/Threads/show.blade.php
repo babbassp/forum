@@ -3,7 +3,6 @@
 @section('content')
     <thread-view :initial-replies-count="{{ $thread->replies_count }}" inline-template>
         <div class="container">
-            {{-- The thread --}}
             <div class="row">
                 <div class="col-md-8">
                     <div class="card mb-3">
@@ -11,7 +10,7 @@
                             <div class="d-flex justify-content-between">
                                 <div class="p-2">
                                     <h4>
-                                        <a href="{{ route('profile', $thread->getCreatorName()) }}">
+                                        <a class="card-link" href="{{ route('profile', $thread->getCreatorName()) }}">
                                             {{ $thread->getCreatorName() }}
                                         </a> posted: {{ $thread->title }}
                                     </h4>
