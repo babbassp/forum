@@ -1,22 +1,89 @@
+<template>
+    <div :id="'reply-' + id" class="card mb-3">
+        <div class="card-header">
+            <div class="d-flex">
+                <div class="p2 mr-auto">
+                    <h4>
+                        <a :href="'/profiles/' + ownerName" v-text="ownerName"></a> said {{ data.created_at }}...
+                    </h4>
+                </div>
+                <div v-if="signedIn">
+                    <div class="p2">
+                        <favorite :reply="data"></favorite>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div v-if="editing">
+                <div class="form-group">
+                    <textarea class="form-control" name="textarea-reply" id="textarea-reply" v-model="body"></textarea>
+                </div>
+                <div class="d-flex">
+                    <div class="form-group">
+                        <div class="p2 mr-1">
+                            <button class="btn btn-sm btn-link" type="submit" :disabled="!body" @click="update()">Update</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="p2">
+                            <button class="btn btn-sm" @click="cancel()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-else v-text="body"></div>
+        </div>
+        <div class="card-footer" v-if="canUpdate">
+            <div class="d-flex">
+                <div class="p2 mr-1">
+                    <button class="btn btn-sm btn-outline-primary" type="submit"
+                            @click="edit()">Edit
+                    </button>
+                </div>
+                <div class="p2">
+                    <button class="btn btn-sm btn-outline-danger" type="submit"
+                            @click="destroy()">Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
 <script>
     import Favorite from './Favorite.vue';
 
     export default {
-        props: ['attributes'],
+        props: ['data'],
+
         data() {
             return {
                 editing: false,
-                body: this.attributes.body
+                id: this.data.id,
+                body: this.data.body,
+                ownerName: this.data.owner.name
             };
         },
+
         created() {
-            this.original = this.attributes.body;
+            this.original = this.data.body;
         },
+
+        computed: {
+            signedIn() {
+                return window.App.signedIn;
+            },
+            canUpdate() {
+                return this.authorize(user => this.data.user_id == user.id);
+            }
+        },
+
         methods: {
             update() {
                 if (this.body !== '') {
                     axios.patch(
-                        '/replies/' + this.attributes.id,
+                        '/replies/' + this.data.id,
                         {body: this.body}
                     );
                     this.editing = false;
@@ -31,15 +98,14 @@
                 this.editing = true;
             },
             destroy() {
-                axios.delete('/replies/' + this.attributes.id);
+                axios.delete('/replies/' + this.data.id);
 
-                $(this.$el).fadeOut(500, function () {
-                    flash('Reply deleted.');
-                });
+                flash('Reply removed.');
+
+                this.$emit('deleted', this.indx);
             }
         },
-        components: {
-            Favorite
-        }
+
+        components: {Favorite}
     }
 </script>
