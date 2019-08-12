@@ -59,7 +59,7 @@ window.Vue = require('vue');
 window.Vue.prototype.authorize = function (handler) {
     const user = window.App.user;
 
-    if (! user) {
+    if (!user) {
         return false;
     }
 
@@ -72,4 +72,6 @@ window.flash = function (message) {
     window.events.$emit('flash', message);
 };
 
+//  installed packeges
 window.pluralize = require('pluralize');
+window.moment = require('moment');

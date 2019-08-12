@@ -4,7 +4,7 @@
             <div class="d-flex">
                 <div class="p2 mr-auto">
                     <h4>
-                        <a :href="'/profiles/' + ownerName" v-text="ownerName"></a> said {{ data.created_at }}...
+                        <a :href="'/profiles/' + ownerName" v-text="ownerName"></a> said {{ createdAt }}...
                     </h4>
                 </div>
                 <div v-if="signedIn">
@@ -70,6 +70,7 @@
 
         created() {
             this.original = this.data.body;
+            this.createdAt = moment(this.data.created_at).calendar();
         },
 
         computed: {
