@@ -15,18 +15,12 @@
 Route::resource('threads', 'ThreadsController', [
     'except' => ['show', 'index', 'destroy']
 ]);
-Route::get('threads/{channel}/{thread}', [
-    'as'   => 'threads.show',
-    'uses' => 'ThreadsController@show'
-]);
-Route::get('threads/{channel?}', [
-    'as'   => 'threads.index',
-    'uses' => 'ThreadsController@index'
-]);
-Route::delete('threads/{channel}/{thread}', [
-    'as'   => 'threads.destroy',
-    'uses' => 'ThreadsController@destroy'
-]);
+Route::get('threads/{channel}/{thread}', 'ThreadsController@show')
+    ->name('threads.show');
+Route::get('threads/{channel?}', 'ThreadsController@index')
+    ->name('threads.index');
+Route::delete('threads/{channel}/{thread}', 'ThreadsController@destroy')
+    ->name('threads.destroy');
 
 /////////////// Favorites ////////////////////////
 Route::post('replies/{reply}/favorites', 'FavoritesController@store')
@@ -39,10 +33,8 @@ Route::delete('replies/{reply}', 'RepliesController@destroy')
     ->name('reply.destroy');
 Route::patch('replies/{reply}', 'RepliesController@update')
     ->name('reply.update');
-Route::get('threads/{channel?}/{thread}/replies', [
-    'as'   => 'threads.replies',
-    'uses' => 'RepliesController@show'
-]);
+Route::get('threads/{channel?}/{thread}/replies', 'RepliesController@show')
+    ->name('threads.replies');
 Route::post('threads/{channel?}/{thread}/replies', 'RepliesController@store')
     ->name('threads.reply.store');
 
