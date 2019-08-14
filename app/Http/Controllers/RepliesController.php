@@ -23,11 +23,13 @@ class RepliesController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Channel $channel
+     * @param Thread  $thread
+     * @return mixed
      */
-    public function index()
+    public function index($channel, Thread $thread)
     {
-        //
+        return $thread->replies()->paginate(10);
     }
 
     /**
@@ -43,12 +45,12 @@ class RepliesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param               $channel
-     * @param ReplyRequest  $request
-     * @param Thread        $thread
+     * @param Channel      $channel
+     * @param ReplyRequest $request
+     * @param Thread       $thread
      * @return \Illuminate\Http\Response
      */
-    public function store($channel, Thread $thread, ReplyRequest $request)
+    public function store(Channel $channel, Thread $thread, ReplyRequest $request)
     {
         $newReply = $thread->replies()->create([
             'body'    => $request->input('body'),

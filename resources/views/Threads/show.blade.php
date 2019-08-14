@@ -30,7 +30,7 @@
                             {{ $thread->body }}
                         </div>
                     </div>
-                    <replies :data="{{ $thread->replies }}" @remove="repliesCount--" @add="repliesCount++"></replies>
+                    <replies @remove="repliesCount--" @add="repliesCount++"></replies>
                 </div>
                 <div class="col-md-4">
                     <div class="card mb-3">

@@ -18,8 +18,7 @@
 
         data() {
             return {
-                body: '',
-                path: location.pathname + '/replies',
+                body: ''
             }
         },
 
@@ -31,7 +30,7 @@
 
         methods: {
             add() {
-                axios.post(this.path, {body: this.body})
+                axios.post(location.pathname + '/replies', {body: this.body})
                     .then(({data}) => {
                         this.body = '';
 

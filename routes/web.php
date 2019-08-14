@@ -33,7 +33,7 @@ Route::delete('replies/{reply}', 'RepliesController@destroy')
     ->name('reply.destroy');
 Route::patch('replies/{reply}', 'RepliesController@update')
     ->name('reply.update');
-Route::get('threads/{channel?}/{thread}/replies', 'RepliesController@show')
+Route::get('threads/{channel?}/{thread}/replies', 'RepliesController@index')
     ->name('threads.replies');
 Route::post('threads/{channel?}/{thread}/replies', 'RepliesController@store')
     ->name('threads.reply.store');

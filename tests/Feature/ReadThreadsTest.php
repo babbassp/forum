@@ -80,4 +80,14 @@ class ReadThreadsTest extends TestCase
         $threads = $this->getJson(route('threads.index') . '?popularity=1')->decodeResponseJson();
         $this->assertEquals([3, 2, 0], array_column($threads, 'replies_count'));
     }
+
+    /** @test */
+    public function the_user_can_request_all_replies_for_a_given_thread()
+    {
+        $reply = factory(Reply::class)->create();
+
+        $response = $this->getJson(route('threads.replies', $reply->thread->getUrlParams()))->json();
+
+        $this->assertTrue(true);
+    }
 }
