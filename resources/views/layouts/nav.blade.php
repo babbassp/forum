@@ -18,9 +18,9 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="nav-link" href="{{ route('threads.index') }}">All Threads</a>
-                        @if ( auth()->check() )
+                        @auth
                             <a class="nav-link" href="{{ route('threads.index') . '?by=' . auth()->user()->name }}">My Threads</a>
-                        @endif
+                        @endauth
                         <a class="nav-link" href="{{ route('threads.index') . '?popularity=1' }}">Popular Threads</a>
                     </div>
                 </li>
