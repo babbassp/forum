@@ -2003,6 +2003,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
+    form_id: {
+      type: String,
+      required: false
+    },
     method: {
       type: String,
       required: true,
@@ -2086,7 +2090,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.body = '';
         flash('Your reply has been posted.');
 
-        _this.$emit('created', data);
+        _this.$emit('create-reply', data);
       });
     }
   }
@@ -2170,7 +2174,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Reply_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Reply.vue */ "./resources/js/components/Reply.vue");
 /* harmony import */ var _NewReply_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NewReply.vue */ "./resources/js/components/NewReply.vue");
-/* harmony import */ var _mixins_Collection__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mixins/Collection */ "./resources/js/mixins/Collection.js");
+/* harmony import */ var _mixins_Collection_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mixins/Collection.js */ "./resources/js/mixins/Collection.js");
 //
 //
 //
@@ -2218,9 +2222,7 @@ __webpack_require__.r(__webpack_exports__);
     Reply: _Reply_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     NewReply: _NewReply_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  mixins: {
-    Collection: _mixins_Collection__WEBPACK_IMPORTED_MODULE_2__["default"]
-  }
+  mixins: [_mixins_Collection_js__WEBPACK_IMPORTED_MODULE_2__["default"]]
 });
 
 /***/ }),
@@ -2338,7 +2340,7 @@ __webpack_require__.r(__webpack_exports__);
     destroy: function destroy() {
       axios["delete"]('/replies/' + this.data.id);
       flash('Reply removed.');
-      this.$emit('deleted', this.indx);
+      this.$emit('delete-reply');
     }
   },
   components: {
@@ -56493,7 +56495,13 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "form",
-    { attrs: { method: _vm.defaultMethod(), action: _vm.action } },
+    {
+      attrs: {
+        id: _vm.form_id,
+        method: _vm.defaultMethod(),
+        action: _vm.action
+      }
+    },
     [
       _c("input", {
         attrs: { type: "hidden", name: "_token" },
@@ -56716,8 +56724,8 @@ var render = function() {
             _c("reply", {
               attrs: { data: reply },
               on: {
-                deleted: function($event) {
-                  return _vm.removeItem(index)
+                "delete-reply": function($event) {
+                  return _vm.remove(index)
                 }
               }
             })
@@ -56737,8 +56745,8 @@ var render = function() {
       _vm._v(" "),
       _c("new-reply", {
         on: {
-          created: function($event) {
-            return _vm.addItem($event)
+          "create-reply": function($event) {
+            return _vm.add($event)
           }
         }
       })
@@ -69687,13 +69695,15 @@ __webpack_require__.r(__webpack_exports__);
       items: []
     };
   },
-  removeItem: function removeItem(index) {
-    this.items.splice(index, 1);
-    this.$emit('remove');
-  },
-  addItem: function addItem(item) {
-    this.items.push(item);
-    this.$emit('add');
+  methods: {
+    remove: function remove(index) {
+      this.items.splice(index, 1);
+      this.$emit('remove');
+    },
+    add: function add(item) {
+      this.items.push(item);
+      this.$emit('add');
+    }
   }
 });
 

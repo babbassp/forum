@@ -1,5 +1,5 @@
 <template>
-    <form v-bind:method="defaultMethod()" v-bind:action="action">
+    <form :id="form_id" v-bind:method="defaultMethod()" v-bind:action="action">
         <input type="hidden" name="_token" v-bind:value="csrf">
         <input type="hidden" name="_method" v-bind:value="uppercaseMethod">
         <slot></slot>
@@ -9,6 +9,10 @@
 <script>
     export default {
         props: {
+            form_id: {
+                type: String,
+                required: false
+            },
             method: {
                 type: String,
                 required: true,

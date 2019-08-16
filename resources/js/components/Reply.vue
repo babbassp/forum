@@ -108,7 +108,7 @@
 
                 flash('Reply removed.');
 
-                this.$emit('deleted', this.indx);
+                this.$emit('delete-reply');
             }
         },
 

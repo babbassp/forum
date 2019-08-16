@@ -1,19 +1,19 @@
 <template>
     <div>
         <div :key="reply.id" v-for="(reply, index) in items">
-            <reply :data="reply" @deleted="removeItem(index)"></reply>
+            <reply :data="reply" @delete-reply="remove(index)"></reply>
         </div>
 
         <paginator :dataSet="dataSet" @updated="fetch($event)"></paginator>
 
-        <new-reply @created="addItem($event)"></new-reply>
+        <new-reply @create-reply="add($event)"></new-reply>
     </div>
 </template>
 
 <script>
     import Reply from './Reply.vue';
     import NewReply from "./NewReply.vue";
-    import Collection from "../mixins/Collection";
+    import Collection from "../mixins/Collection.js";
 
     export default {
         data() {
@@ -51,6 +51,6 @@
             Reply, NewReply
         },
 
-        mixins: {Collection}
+        mixins: [Collection]
     }
 </script>

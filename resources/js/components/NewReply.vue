@@ -36,7 +36,7 @@
 
                         flash('Your reply has been posted.');
 
-                        this.$emit('created', data);
+                        this.$emit('create-reply', data);
                     });
             }
         }
