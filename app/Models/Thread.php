@@ -10,15 +10,16 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  *
- * @property int                                                $id
- * @property int                                                $user_id
- * @property int                                                $replies_count
- * @property int                                                $channel_id
- * @property string                                             $title
- * @property string                                             $body
- * @property \Illuminate\Database\Eloquent\Relations\HasMany    $replies
- * @property \Illuminate\Database\Eloquent\Relations\BelongsTo  $creator
- * @property  \Illuminate\Database\Eloquent\Relations\BelongsTo $channel
+ * @property int                                               $id
+ * @property int                                               $user_id
+ * @property int                                               $replies_count
+ * @property int                                               $channel_id
+ * @property string                                            $title
+ * @property string                                            $body
+ * @property \Illuminate\Database\Eloquent\Relations\HasMany   $replies
+ * @property \Illuminate\Database\Eloquent\Relations\BelongsTo $creator
+ * @property \Illuminate\Database\Eloquent\Relations\BelongsTo $channel
+ * @property \Illuminate\Database\Eloquent\Relations\HasMany   $subscriptions
  */
 class Thread extends Model
 {
@@ -129,5 +130,60 @@ class Thread extends Model
     public static function scopeFilter($query, $filters)
     {
         return $filters->apply($query);
+    }
+
+    /**
+     * Subscribes a user to a thread.
+     *
+     * @param \App\Models\User|int|null $user
+     * @return void
+     */
+    public function subscribe($user = null)
+    {
+        $this->subscriptions()
+            ->create([
+                'user_id' => $this->objOrNull($user)
+            ]);
+    }
+
+    /**
+     * Unsubscribes a user from a thread.
+     *
+     * @param \App\Models\User|int|null $user
+     * @return void
+     */
+    public function unsubscribe($user = null)
+    {
+        $this->subscriptions()
+            ->where('user_id', $this->objOrNull($user))
+            ->delete();
+    }
+
+    /**
+     * Helper to check the parameter type and converts it to an id.
+     *
+     * @param $user
+     * @return int|string|null
+     * @return int
+     */
+    public function objOrNull($user)
+    {
+        if (is_object($user)) {
+            $user = $user->id;
+        }elseif (is_null($user)) {
+            $user = auth()->id();
+        }
+
+        return $user;
+    }
+
+    /**
+     * The subscriptions the thread has.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function subscriptions()
+    {
+        return $this->hasMany(ThreadSubscription::class);
     }
 }
