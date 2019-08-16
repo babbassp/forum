@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int                                                $id
  * @property int                                                $user_id
  * @property int                                                $replies_count
+ * @property int                                                $channel_id
  * @property string                                             $title
  * @property string                                             $body
  * @property \Illuminate\Database\Eloquent\Relations\HasMany    $replies
@@ -120,10 +121,10 @@ class Thread extends Model
 
     /**
      *
-     * @author Brandon Abbasspour <babbassp@umflint.edu>
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @param \App\Filters\ThreadFilters            $filters
      * @return \Illuminate\Database\Eloquent\Builder
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
      */
     public static function scopeFilter($query, $filters)
     {
