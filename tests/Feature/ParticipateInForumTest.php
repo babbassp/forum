@@ -38,9 +38,7 @@ class ParticipateInForumTest extends TestCase
             $reply->toArray()
         );
 
-        $this->get(
-            route('threads.show', $thread->getUrlParams())
-        )->assertSee($reply->body);
+        $this->assertDatabaseHas('replies', ['body' => $reply->body]);
     }
 
     /** @test */

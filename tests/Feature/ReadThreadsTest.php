@@ -38,21 +38,6 @@ class ReadThreadsTest extends TestCase
     }
 
     /** @test */
-    public function a_user_can_see_a_reply_associated_with_a_thread()
-    {
-        $channel = factory(Channel::class)->create()->id;
-
-        $thread = factory(Thread::class)->create(['channel_id' => $channel]);
-
-        $reply = factory(Reply::class)->create([
-            'thread_id' => $thread->id
-        ]);
-
-        $this->get(route('threads.show', $thread->getUrlParams()))
-            ->assertSee($reply->body);
-    }
-
-    /** @test */
     public function a_user_can_filter_a_thread_according_to_tags()
     {
         $expectedThread = factory(Thread::class)->create([
