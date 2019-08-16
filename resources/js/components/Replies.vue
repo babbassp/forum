@@ -44,6 +44,8 @@
             refresh(response) {
                 this.dataSet = response.data;
                 this.items = this.dataSet.data;
+
+                window.scrollTo(0, 0);
             }
         },
 
