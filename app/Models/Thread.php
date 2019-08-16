@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int                                                $id
  * @property int                                                $user_id
+ * @property int                                                $replies_count
  * @property string                                             $title
  * @property string                                             $body
  * @property \Illuminate\Database\Eloquent\Relations\HasMany    $replies
@@ -30,6 +31,7 @@ class Thread extends Model
     protected $fillable = [
         'user_id',
         'channel_id',
+        'replies_count',
         'title',
         'body'
     ];
@@ -48,13 +50,6 @@ class Thread extends Model
      * @var array
      */
     protected $with = ['channel', 'creator'];
-
-    /**
-     * The relationship counts that should be eager loaded on every query.
-     *
-     * @var array
-     */
-    protected $withCount = ['replies'];
 
     /**
      * The "booting" method of the model.

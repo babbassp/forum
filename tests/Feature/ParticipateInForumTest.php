@@ -21,7 +21,7 @@ class ParticipateInForumTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_may_participate_in_foriegn_threads()
+    public function an_authenticated_user_may_participate_in_forum_threads()
     {
         $this->actingAs($user = factory(User::class)->create());
 
@@ -29,15 +29,14 @@ class ParticipateInForumTest extends TestCase
 
         $thread = factory(Thread::class)->create(['channel_id' => $channel->id]);
 
-        $reply = factory(Reply::class)->make(['user_id' => $user->id]);
-
-        $this->assertEquals($user->id, $reply->user_id);
+        $reply = factory(Reply::class)->make();
 
         $this->post(
             route('threads.reply.store', $thread->getUrlParams()),
             $reply->toArray()
         );
 
+        $this->assertEquals(1, $thread->fresh()->replies_count);
         $this->assertDatabaseHas('replies', ['body' => $reply->body]);
     }
 
@@ -82,11 +81,13 @@ class ParticipateInForumTest extends TestCase
     {
         $this->signIn();
 
-        $reply = factory(Reply::class)->create(['user_id' => auth()->id()]);
+        $thread = factory(Thread::class)->create(['user_id' => auth()->id()]);
+        $reply = factory(Reply::class)->create(['thread_id' => $thread->id, 'user_id' => auth()->id()]);
 
         $this->delete(route('reply.destroy', $reply->id));
 
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+        $this->assertEquals(0, $thread->fresh()->replies_count);
     }
 
     /** @test */

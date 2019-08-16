@@ -67,6 +67,26 @@ class ReadThreadsTest extends TestCase
     }
 
     /** @test */
+    public function a_user_can_filter_threads_that_are_unanswered()
+    {
+        $unanswered = factory(Thread::class, 10)->create();
+
+        factory(Thread::class, 3)->state('with_reply')->create();
+
+        $response = $this->getJson(route('threads.index') . '?unanswered=1')->decodeResponseJson();
+
+        $this->assertCount(10, $response);
+
+        $maped = array_map(function ($thread) {
+            return $thread['id'];
+        }, $response);
+
+        $this->assertEmpty(
+            array_diff($maped, $unanswered->pluck('id')->toArray())
+        );
+    }
+
+    /** @test */
     public function the_user_can_request_all_replies_for_a_given_thread()
     {
         $reply = factory(Reply::class)->create();

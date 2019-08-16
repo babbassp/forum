@@ -44,6 +44,24 @@ class Reply extends Model
     protected $with = ['owner', 'favorites'];
 
     /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($reply) {
+            $reply->thread->increment('replies_count');
+        });
+
+        static::deleted(function ($reply) {
+            $reply->thread->decrement('replies_count');
+        });
+    }
+
+    /**
      * The user associated with the reply.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

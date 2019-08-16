@@ -17,12 +17,12 @@ class ThreadFilters extends Filters
     /**
      * @var array
      */
-    protected $filters = ['by', 'popularity'];
+    protected $filters = ['by', 'popularity', 'unanswered'];
 
     /**
-     * @author Brandon Abbasspour <babbassp@umflint.edu>
      * @param string $username
      * @return \Illuminate\Database\Eloquent\Builder
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
      */
     public function by($username)
     {
@@ -34,11 +34,22 @@ class ThreadFilters extends Filters
     /**
      * Filter the query according to most popular threads.
      *
-     * @author Brandon Abbasspour <babbassp@umflint.edu>
      * @return \Illuminate\Database\Eloquent\Builder
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
      */
     public function popularity()
     {
         return $this->builder->orderBy('replies_count', 'desc');
+    }
+
+    /**
+     * Filter threads that don't have replies.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
+     */
+    public function unanswered()
+    {
+        return $this->builder->where('replies_count', 0);
     }
 }
