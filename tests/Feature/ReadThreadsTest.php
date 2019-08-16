@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
 use Carbon\Carbon;
@@ -13,9 +12,7 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function a_user_can_see_all_threads()
     {
-        $channel = factory(Channel::class)->create()->id;
-
-        $threads = factory(Thread::class, 10)->create(['channel_id' => $channel]);
+        $threads = factory(Thread::class, 10)->create();
 
         $response = $this->get(route('threads.index'));
 
@@ -28,9 +25,7 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function a_user_can_see_a_specific_thread()
     {
-        $channel = factory(Channel::class)->create()->id;
-
-        $thread = factory(Thread::class)->create(['channel_id' => $channel]);
+        $thread = factory(Thread::class)->create();
 
         $this->get(route('threads.show', $thread->getUrlParams()))
             ->assertSee($thread->title)
@@ -40,9 +35,7 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function a_user_can_filter_a_thread_according_to_tags()
     {
-        $expectedThread = factory(Thread::class)->create([
-            'channel_id' => factory(Channel::class)->create()->id
-        ]);
+        $expectedThread = factory(Thread::class)->create();
 
         $anotherThread = factory(Thread::class)->create();
 
@@ -91,8 +84,8 @@ class ReadThreadsTest extends TestCase
     {
         $reply = factory(Reply::class)->create();
 
-        $response = $this->getJson(route('threads.replies', $reply->thread->getUrlParams()))->json();
+        $response = $this->getJson(route('threads.replies', $reply->thread->getUrlParams()))->decodeResponseJson();
 
-        $this->assertTrue(true);
+        $this->assertCount(1, $response['data']);
     }
 }
