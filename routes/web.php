@@ -11,7 +11,7 @@
 |
 */
 
-///////////////// Threads & Channels /////////////
+///////////////// Threads & Channels & Subscriptions /////////////
 Route::resource('threads', 'ThreadsController', [
     'except' => ['show', 'index', 'destroy']
 ]);
@@ -21,6 +21,10 @@ Route::get('threads/{channel?}', 'ThreadsController@index')
     ->name('threads.index');
 Route::delete('threads/{channel}/{thread}', 'ThreadsController@destroy')
     ->name('threads.destroy');
+Route::post('threads/{channel?}/{thread}/subscriptions', 'ThreadSubscriptionsController@store')
+    ->name('threads.subscribe');
+Route::delete('threads/{channel?}/{thread}/subscriptions', 'ThreadSubscriptionsController@destroy')
+    ->name('threads.unsubscribe');
 
 /////////////// Favorites ////////////////////////
 Route::post('replies/{reply}/favorites', 'FavoritesController@store')

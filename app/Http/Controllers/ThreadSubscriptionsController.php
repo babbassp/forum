@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\ThreadSubscription;
+use App\Models\Channel;
+use App\Models\Thread;
+use App\Models\ThreadSubscription;
 use Illuminate\Http\Request;
 
-class ThreadSubscriptionController extends Controller
+class ThreadSubscriptionsController extends Controller
 {
+    /**
+     * ThreadsController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -30,18 +40,25 @@ class ThreadSubscriptionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \App\Models\Channel $channel
+     * @param \App\Models\Thread  $thread
+     * @return void
      */
-    public function store(Request $request)
+    public function store(Channel $channel, Thread $thread)
     {
-        //
+        $thread->subscribe();
+
+        if (request()->wantsJson()) {
+            return response(['status' => 'Subscribed to thread.']);
+        }
+
+        return back();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ThreadSubscription  $threadSubscription
+     * @param \App\Models\ThreadSubscription $threadSubscription
      * @return \Illuminate\Http\Response
      */
     public function show(ThreadSubscription $threadSubscription)
@@ -52,7 +69,7 @@ class ThreadSubscriptionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ThreadSubscription  $threadSubscription
+     * @param \App\Models\ThreadSubscription $threadSubscription
      * @return \Illuminate\Http\Response
      */
     public function edit(ThreadSubscription $threadSubscription)
@@ -63,8 +80,8 @@ class ThreadSubscriptionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ThreadSubscription  $threadSubscription
+     * @param \Illuminate\Http\Request       $request
+     * @param \App\Models\ThreadSubscription $threadSubscription
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, ThreadSubscription $threadSubscription)
@@ -75,11 +92,18 @@ class ThreadSubscriptionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ThreadSubscription  $threadSubscription
-     * @return \Illuminate\Http\Response
+     * @param \App\Models\Channel $channel
+     * @param \App\Models\Thread  $thread
+     * @return void
      */
-    public function destroy(ThreadSubscription $threadSubscription)
+    public function destroy(Channel $channel, Thread $thread)
     {
-        //
+        $thread->unsubscribe();
+
+        if (request()->wantsJson()) {
+            return response(['status' => 'Unsubscribed from thread.']);
+        }
+
+        return back();
     }
 }

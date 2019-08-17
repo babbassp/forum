@@ -121,6 +121,15 @@ class Thread extends Model
     }
 
     /**
+     * Get the thread's subscription status.
+     */
+    public function getIsSubscribedToAttribute()
+    {
+        return $this->subscriptions()->where(['user_id' => auth()->id()])->exists();
+    }
+
+
+    /**
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @param \App\Filters\ThreadFilters            $filters
