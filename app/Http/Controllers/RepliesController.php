@@ -48,11 +48,11 @@ class RepliesController extends Controller
      * @param Channel      $channel
      * @param ReplyRequest $request
      * @param Thread       $thread
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function store(Channel $channel, Thread $thread, ReplyRequest $request)
     {
-        $newReply = $thread->replies()->create([
+        $newReply = $thread->addReply([
             'body'    => $request->input('body'),
             'user_id' => auth()->id()
         ]);

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\ThreadWasUpdated;
 use App\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Model;
 
@@ -153,6 +154,23 @@ class Thread extends Model
             ->create([
                 'user_id' => $this->objOrNull($user)
             ]);
+    }
+
+    /**
+     * @param array $reply
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function addReply($reply)
+    {
+        $newReply = $this->replies()->create($reply);
+
+        $this->subscriptions()
+            ->where('user_id', '!=', $newReply->user_id)
+            ->get()
+            ->each
+            ->notify($newReply);
+
+        return $newReply;
     }
 
     /**

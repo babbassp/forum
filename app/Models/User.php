@@ -98,11 +98,21 @@ class User extends Authenticatable
     /**
      * Gets the user's activity (created thread, replied to a thread, favorited a reply, etc.).
      *
-     * @author Brandon Abbasspour <babbassp@umflint.edu>
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
      */
     public function activity()
     {
         return $this->hasMany(Activity::class);
+    }
+
+    /**
+     * Gets the user's subscriptions for threads.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function subscriptions()
+    {
+        return $this->hasMany(ThreadSubscription::class);
     }
 }
