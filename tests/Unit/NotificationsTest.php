@@ -4,17 +4,35 @@ namespace Tests\Unit;
 
 use App\Models\Thread;
 use App\Models\User;
+use Illuminate\Notifications\DatabaseNotification;
 use Tests\TestCase;
 
 class NotificationsTest extends TestCase
 {
-    /** @test */
-    public function a_notification_is_prepared_when_a_subscribed_thread_recieves_a_new_reply()
+    /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
+    public function setUp(): void
     {
-        $this->signIn();
+        parent::setUp();
 
+        $this->signIn();
+    }
+
+    /** @test */
+    public function a_notification_is_prepared_when_a_subscribed_thread_recieves_a_new_reply_that_is_not_by_the_current_user()
+    {
         $thread = factory(Thread::class)->create();
         $thread->subscribe();
+
+        $this->assertCount(0, auth()->user()->notifications); // sanity check
+
+        $thread->addReply([
+            'user_id' => auth()->id(),
+            'body'    => $this->faker->paragraph
+        ]);
 
         $this->assertCount(0, auth()->user()->notifications);
 
@@ -27,71 +45,31 @@ class NotificationsTest extends TestCase
     }
 
     /** @test */
-    public function a_notification_is_prepared_when_a_subscribed_thread_recieves_a_new_reply_that_is_not_by_the_current_user()
-    {
-        $this->signIn();
-
-        $thread = factory(Thread::class)->create();
-        $thread->subscribe();
-
-        $this->assertCount(0, auth()->user()->notifications);
-
-        $thread->addReply([
-            'user_id' => auth()->id(),
-            'body'    => $this->faker->paragraph
-        ]);
-
-        $this->assertCount(0, auth()->user()->fresh()->notifications);
-    }
-
-    /** @test */
     public function a_user_can_fetch_all_their_unread_notifications()
     {
-        $this->signIn();
-
-        $auth = auth()->user();
-
-        $thread = factory(Thread::class)->create();
-        $thread->subscribe();
-
-        $thread->addReply([
-            'user_id' => factory(User::class)->create()->id,
-            'body'    => $this->faker->paragraph
-        ]);
-
-        $this->assertCount(1, $auth->unreadNotifications);
+        $notification = factory(DatabaseNotification::class)->create();
 
         $response = $this->getJson(
-            route('notifications.index', ['user' => $auth->name])
+            route('notifications.index', ['user' => auth()->user()->name])
         )->json();
 
-        $this->assertCount(1, $response);
-
-        $this->assertTrue($response[0]['id'] == $auth->unreadNotifications->first()->id);
+        $this->assertTrue($notification->id == $response[0]['id']);
     }
 
     /** @test */
     public function a_user_can_mark_a_notification_as_read()
     {
-        $this->signIn();
+        factory(DatabaseNotification::class)->create();
 
-        $auth = auth()->user();
+        tap(auth()->user(), function ($user) {
+            $this->assertCount(1, $user->unreadNotifications);
 
-        $thread = factory(Thread::class)->create();
-        $thread->subscribe();
+            $this->delete(route('notifications.destroy', [
+                'user'         => $user->name,
+                'notification' => $user->firstUnreadNotification()->id
+            ]));
 
-        $thread->addReply([
-            'user_id' => factory(User::class)->create()->id,
-            'body'    => $this->faker->paragraph
-        ]);
-
-        $this->assertCount(1, $auth->unreadNotifications);
-
-        $this->delete(route('notifications.destroy', [
-            'user'         => $auth->name,
-            'notification' => $auth->unreadNotifications->first()->id
-        ]));
-
-        $this->assertCount(1, $auth->readNotifications);
+            $this->assertCount(1, $user->readNotifications);
+        });
     }
 }
