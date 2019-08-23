@@ -70,7 +70,8 @@ class ThreadWasUpdated extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message' => 'Updated'
+            'message' => $this->reply->owner->name . ' replied to ' . $this->thread->title,
+            'link'    => route('threads.show', $this->thread->getUrlParams()) . '#reply-' . $this->reply->id
         ];
     }
 }
