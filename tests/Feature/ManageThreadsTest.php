@@ -84,11 +84,11 @@ class ManageThreadsTest extends TestCase
     /** @test */
     public function a_user_can_filter_threads_by_any_username()
     {
+        $threadNotByFoo = factory(Thread::class)->create();
+
         $this->signIn(factory(User::class)->create(['name' => 'foo']));
 
-        $threadByFoo = factory(Thread::class)->create(['user_id' => auth()->id()]);
-
-        $threadNotByFoo = factory(Thread::class)->create();
+        $threadByFoo = factory(Thread::class)->create();
 
         $this->get(route('threads.index') . '?by=foo')
             ->assertSee($threadByFoo->title)
@@ -99,9 +99,7 @@ class ManageThreadsTest extends TestCase
     public function unauthorized_users_can_not_delete_threads()
     {
         // guests
-        $thread = factory(Thread::class)->create([
-            'user_id' => factory(User::class)->create()->id
-        ]);
+        $thread = factory(Thread::class)->create();
 
         $response = $this->json(
             'DELETE',
@@ -128,7 +126,7 @@ class ManageThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $thread = factory(Thread::class)->create(['user_id' => auth()->id()]);
+        $thread = factory(Thread::class)->create();
 
         $reply = factory(Reply::class)->create(['thread_id' => $thread->id]);
 
