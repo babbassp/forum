@@ -157,20 +157,31 @@ class Thread extends Model
     }
 
     /**
-     * @param array $reply
+     * @param array $replyData
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function addReply($reply)
+    public function addReply($replyData)
     {
-        $newReply = $this->replies()->create($reply);
+        $newReply = $this->replies()->create($replyData);
 
-        $this->subscriptions()
-            ->where('user_id', '!=', $newReply->user_id)
-            ->get()
-            ->each
-            ->notify($newReply);
+        $this->notifySubscribers($newReply);
 
         return $newReply;
+    }
+
+    /**
+     * Notifies all the thread's subscribers that the thread was upated.
+     *
+     * @param $reply
+     * @return void
+     */
+    protected function notifySubscribers($reply)
+    {
+        $this->subscriptions()
+            ->where('user_id', '!=', $reply->user_id)
+            ->get()
+            ->each
+            ->notify($reply);
     }
 
     /**
