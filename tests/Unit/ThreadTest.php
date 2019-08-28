@@ -6,7 +6,9 @@ use App\Models\Favorite;
 use App\Models\Reply;
 use App\Models\Thread;
 use App\Models\User;
+use App\Notifications\ThreadWasUpdated;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class ThreadTest extends TestCase
@@ -24,7 +26,6 @@ class ThreadTest extends TestCase
         parent::setUp();
 
         $this->thread = factory(Thread::class)->create();
-
     }
 
     /** @test */
@@ -102,5 +103,27 @@ class ThreadTest extends TestCase
             ->get();
 
         $this->assertCount(0, $subscriptions);
+    }
+
+    /** @test */
+    public function a_thread_notifies_all_registered_subscribers_when_a_reply_is_added()
+    {
+        Notification::fake();
+
+        Notification::assertNothingSent();
+
+        $this->signIn();
+
+        $this->thread->subscribe();
+
+        $this->thread->addReply([
+            'body'    => $this->faker->paragraph,
+            'user_id' => $this->thread->user_id
+        ]);
+
+        Notification::assertSentTo(
+            [auth()->user()],
+            ThreadWasUpdated::class
+        );
     }
 }
