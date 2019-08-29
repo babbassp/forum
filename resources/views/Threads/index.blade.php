@@ -11,7 +11,7 @@
                                 <div class="p-2">
                                     <h4>
                                         <a href="{{ route('threads.show', $thread->getUrlParams()) }}">
-                                            @if(auth()->check() && $thread->hasUpdatesFor(auth()->user()))
+                                            @if(auth()->check() && auth()->user()->hasUpdatesFor($thread))
                                                 <strong>{{ $thread->title }}</strong>
                                             @else
                                                 {{ $thread->title }}

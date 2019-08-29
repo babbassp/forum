@@ -134,4 +134,18 @@ class User extends Authenticatable
     {
         cache()->forever( $this->visitsCacheKey($thread), now() );
     }
+
+    /**
+     *
+     * @param \App\Models\Thread $thread
+     * @return bool
+     * @throws \Exception
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
+     */
+    public function hasUpdatesFor($thread)
+    {
+        $key = $this->visitsCacheKey($thread);
+
+        return $thread->updated_at > cache($key);
+    }
 }

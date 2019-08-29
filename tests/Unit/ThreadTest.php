@@ -135,11 +135,11 @@ class ThreadTest extends TestCase
         $thread = factory(Thread::class)->create();
 
         tap(auth()->user(), function ($user) use ($thread) {
-            $this->assertTrue($thread->hasUpdatesFor($user));
+            $this->assertTrue($user->hasUpdatesFor($thread));
 
             $user->read($thread);
 
-            $this->assertFalse($thread->hasUpdatesFor($user));
+            $this->assertFalse($user->hasUpdatesFor($thread));
         });
     }
 }

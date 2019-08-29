@@ -226,16 +226,4 @@ class Thread extends Model
     {
         return $this->hasMany(ThreadSubscription::class);
     }
-
-    /**
-     * @param \App\Models\User $user
-     * @return bool
-     * @throws \Exception
-     */
-    public function hasUpdatesFor($user)
-    {
-        $key = $user->visitsCacheKey($this);
-
-        return $this->updated_at > cache($key);
-    }
 }
