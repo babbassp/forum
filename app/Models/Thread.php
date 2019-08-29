@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Database\Eloquent\Relations\BelongsTo $creator
  * @property \Illuminate\Database\Eloquent\Relations\BelongsTo $channel
  * @property \Illuminate\Database\Eloquent\Relations\HasMany   $subscriptions
+ * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon $created_at
  */
 class Thread extends Model
 {
@@ -223,5 +225,17 @@ class Thread extends Model
     public function subscriptions()
     {
         return $this->hasMany(ThreadSubscription::class);
+    }
+
+    /**
+     * @param \App\Models\User $user
+     * @return bool
+     * @throws \Exception
+     */
+    public function hasUpdatesFor($user)
+    {
+        $key = $user->visitsCacheKey($this);
+
+        return $this->updated_at > cache($key);
     }
 }

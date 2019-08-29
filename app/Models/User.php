@@ -65,8 +65,8 @@ class User extends Authenticatable
     /**
      * Get a user's name.
      *
-     * @author Brandon Abbasspour <babbassp@umflint.edu>
      * @return string
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
      */
     public function getName()
     {
@@ -76,8 +76,8 @@ class User extends Authenticatable
     /**
      * Get a user's threads.
      *
-     * @author Brandon Abbasspour <babbassp@umflint.edu>
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
      */
     public function threads()
     {
@@ -87,8 +87,8 @@ class User extends Authenticatable
     /**
      * Get a user's replies.
      *
-     * @author Brandon Abbasspour <babbassp@umflint.edu>
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @author Brandon Abbasspour <babbassp@umflint.edu>
      */
     public function replies()
     {
@@ -114,5 +114,24 @@ class User extends Authenticatable
     public function subscriptions()
     {
         return $this->hasMany(ThreadSubscription::class);
+    }
+
+    /**
+     * @param \App\Models\Thread $thread
+     * @return string
+     */
+    public function visitsCacheKey($thread)
+    {
+        return sprintf('users.%s.visits.%s', $this->id, $thread->id);
+    }
+
+    /**
+     * @param \App\Models\Thread $thread
+     * @throws \Exception
+     * @return void
+     */
+    public function read($thread)
+    {
+        cache()->forever( $this->visitsCacheKey($thread), now() );
     }
 }

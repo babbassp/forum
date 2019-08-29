@@ -9,9 +9,15 @@
                         <div class="card-header">
                             <div class="d-flex justify-content-between">
                                 <div class="p-2">
-                                    <h4><a href="{{ route('threads.show', $thread->getUrlParams()) }}">
-                                            {{ $thread->title }}
-                                        </a></h4>
+                                    <h4>
+                                        <a href="{{ route('threads.show', $thread->getUrlParams()) }}">
+                                            @if(auth()->check() && $thread->hasUpdatesFor(auth()->user()))
+                                                <strong>{{ $thread->title }}</strong>
+                                            @else
+                                                {{ $thread->title }}
+                                            @endif
+                                        </a>
+                                    </h4>
                                 </div>
                                 <div class="p-2">
                                     {{ $thread->replies_count }} {{ Str::plural('reply', $thread->replies_count) }}
