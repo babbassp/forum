@@ -113,4 +113,24 @@ class ParticipateInForumTest extends TestCase
 
         $this->assertNotEquals(Reply::find($reply->id)->value('body'), $message);
     }
+
+    /** @test */
+    public function replies_that_contain_spam_may_not_be_created()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->signIn();
+
+        $reply = factory(Reply::class)
+            ->state('by_auth')
+            ->create(['body' => 'WordPress is the best!']);
+        $thread = $reply->thread;
+
+        $this->expectException(\Exception::class);
+
+        $this->post(
+            route('threads.reply.store', $thread->getUrlParams()),
+            $reply->toArray()
+        );
+    }
 }

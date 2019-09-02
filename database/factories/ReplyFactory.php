@@ -16,3 +16,14 @@ $factory->define(Reply::class, function (Faker $faker) {
         'body'      => $faker->paragraph
     ];
 });
+
+$factory->state(Reply::class, 'by_auth', function (Faker $faker) {
+    $authId = auth()->id();
+    return [
+        'user_id'   => $authId,
+        'thread_id' => function () use ($authId) {
+            return factory(\App\Models\Thread::class)->create(['user_id' => $authId])->id;
+        },
+        'body'      => $faker->paragraph
+    ];
+});

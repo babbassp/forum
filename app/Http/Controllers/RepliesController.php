@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ReplyRequest;
 use App\Models\Channel;
 use App\Models\Reply;
+use App\Inspections\Spam;
 use App\Models\Thread;
 use Illuminate\Http\Request;
 
@@ -45,13 +46,17 @@ class RepliesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Channel      $channel
-     * @param ReplyRequest $request
-     * @param Thread       $thread
+     * @param Channel          $channel
+     * @param Thread           $thread
+     * @param ReplyRequest     $request
+     * @param \App\Inspections\Spam $spam
      * @return \Illuminate\Database\Eloquent\Model
+     * @throws \Exception
      */
-    public function store(Channel $channel, Thread $thread, ReplyRequest $request)
+    public function store(Channel $channel, Thread $thread, ReplyRequest $request, Spam $spam)
     {
+        $spam->detect($request->input('body'));
+
         $newReply = $thread->addReply([
             'body'    => $request->input('body'),
             'user_id' => auth()->id()
